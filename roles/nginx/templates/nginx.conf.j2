@@ -72,6 +72,13 @@ http {
       return         301 https://$server_name$request_uri;
     }
 {% endif %}
+{% if freefeed_html_react_enabled %}
+    server {
+      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
+      server_name    {{ freefeed_html_react_hostname }};
+      return         301 https://$server_name$request_uri;
+    }
+{% endif %}
 {% endif %}
 
     server {
@@ -118,5 +125,18 @@ http {
         rewrite ^.* /index.htm break;
       }
    }
+{% endif %}
+{% if freefeed_html_react_enabled %}
+   server {
+     server_name {{ freefeed_html_react_hostname }};
+     include pepyatka-common.conf;
+
+     location / {
+       root /var/www/freefeed-html-react/public;
+       access_log off;
+       expires max;
+       try_files $uri $uri/ /index.html?/$request_uri;
+     }
+  }
 {% endif %}
 }

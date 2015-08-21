@@ -1,0 +1,78 @@
+---
+
+- name: Check if freefeed-html-react repo already exists
+  stat: path=/var/www/freefeed-html-react/.git
+  register: freefeed_html_react_dir
+
+- name: Initial deploy of freefeed-html-react
+  git:
+    repo: "{{ freefeed_html_react_repo }}"
+    dest: /var/www/freefeed-html-react
+    version: "{{ freefeed_html_react_branch }}"
+  when: not freefeed_html_react_dir.stat.exists
+  register: freefeed_html_react_init
+
+- name: Get freefeed-html-react local version
+  command: chdir=/var/www/freefeed-html-react git rev-parse HEAD
+  register: freefeed_html_react_local_version
+
+- name: Fetch freefeed-html-react remote
+  command: chdir=/var/www/freefeed-html-react git fetch origin
+
+- name: Get freefeed-html-react version on remote
+  command: chdir=/var/www/freefeed-html-react git rev-parse origin/{{ freefeed_html_react_branch }}
+  register: freefeed_html_react_remote_version
+
+- name: Update freefeed-html-react
+  git:
+    repo: "{{ freefeed_html_react_repo }}"
+    update: yes
+    dest: /var/www/freefeed-html-react
+    version: "{{ freefeed_html_react_branch }}"
+    force: yes
+  register: freefeed_html_react
+  when: freefeed_html_react_local_version.stdout != freefeed_html_react_remote_version.stdout
+
+- name: Save changelog in a file
+  shell: echo "{{ freefeed_html_react_local_version.stdout }}...{{ freefeed_html_react_remote_version.stdout }}" > /tmp/freefeed-html-react-changelog
+  when: freefeed_html_react_local_version.stdout != freefeed_html_react_remote_version.stdout
+
+- name: Fetch freefeed-html-react changelog
+  fetch:
+    src=/tmp/freefeed-html-react-changelog
+    dest=freefeed-html-react-changelog/{{ inventory_hostname }}
+    flat=yes
+  when: freefeed_html_react_local_version.stdout != freefeed_html_react_remote_version.stdout
+
+- name: Fix server name in src/actions/auth.jsx
+  replace:
+    dest: /var/www/freefeed-html-react/src/actions/auth.jsx
+    regexp: "const API_HOST =.*"
+    replace: "const API_HOST = '{{ pepyatka_frontend_scheme }}://{{ pepyatka_hostname }}'"
+
+- name: Update service name in public/index.html
+  replace:
+    dest: /var/www/freefeed-html-react/public/index.html
+    regexp: "Reactive Pepyatka"
+    replace: "{{ pepyatka_service_name }}"
+
+- name: Install freefeed-html-react dependencies
+  npm: path=/var/www/freefeed-html-react state=latest
+  when: freefeed_html_react.changed or freefeed_html_react_init.changed
+
+- name: Install gulp globally
+  npm: name=gulp state=latest global=yes
+
+- name: Build assets
+  command: gulp build
+  args:
+    chdir: /var/www/freefeed-html-react
+
+- name: Fix freefeed-html-react permissions
+  file:
+    path: /var/www/freefeed-html-react
+    owner: "{{ www_user }}"
+    group: "{{ www_group }}"
+    state: directory
+    recurse: yes
+

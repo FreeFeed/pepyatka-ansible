@@ -28,6 +28,7 @@
         repo: "{{ pepyatka_ansible_repo }}"
         dest: /root/pepyatka-ansible
         version: "{{ pepyatka_ansible_branch }}"
+        force: yes
       tags:
         - bootstrap
 
@@ -36,6 +37,7 @@
         repo: "{{ pepyatka_server_repo }}"
         dest: /root/pepyatka-server
         version: "{{ pepyatka_server_branch }}"
+        force: yes
       tags:
         - bootstrap
 
@@ -44,6 +46,7 @@
         repo: "{{ pepyatka_html_repo }}"
         dest: /root/pepyatka-html
         version: "{{ pepyatka_html_branch }}"
+        force: yes
       tags:
         - bootstrap
 

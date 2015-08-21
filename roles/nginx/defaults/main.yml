@@ -19,3 +19,7 @@ pepyatka_lite_enabled: False
 crypto_private_enabled: False
 crypto_private_host: localhost
 crypto_private_port: 3030
+freefeed_html_react_enabled: False
+freefeed_html_react_repo: https://github.com/freefeed/freefeed-html-react.git
+freefeed_html_react_branch: master
+

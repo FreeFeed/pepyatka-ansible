@@ -171,6 +171,13 @@
     - pepyatka
     - nginx
 
+- include: react.yml
+  when: freefeed_html_react_enabled
+  tags:
+    - freefeed_html_react
+    - pepyatka
+    - nginx
+
 - include: pepyatka-lite.yml
   when: pepyatka_lite_enabled
 

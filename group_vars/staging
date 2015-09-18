@@ -33,4 +33,4 @@ freefeed_html_react_enabled: true
 freefeed_html_react_repo: https://github.com/freefeed/freefeed-html-react.git
 freefeed_html_react_branch: master
 freefeed_html_react_hostname: george.freefeed.net
-
+pepyatka_auth_token_prefix: micropeppa_

@@ -42,3 +42,4 @@ nginx_proxy_protocol_real_ips:
 freefeed_html_react_enabled: False
 freefeed_html_react_repo: https://github.com/freefeed/freefeed-html-react.git
 freefeed_html_react_branch: master
+pepyatka_auth_token_prefix: freefeed_

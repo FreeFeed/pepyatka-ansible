@@ -83,6 +83,15 @@
     - pepyatka
     - nginx
 
+- name: Fix authentication token perfix in public/js/config.js
+  replace:
+    dest: /var/www/pepyatka-html/public/js/config.js
+    regexp: "tokenPrefix:.*"
+    replace: "tokenPrefix: \"{{ pepyatka_auth_token_prefix }}\""
+  tags:
+    - pepyatka
+    - nginx
+
 - name: Update version in public/index.html
   replace:
     dest: /var/www/pepyatka-html/public/index.html

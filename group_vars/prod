@@ -39,8 +39,9 @@ nginx_restrict_users_ip: 136.243.23.88
 nginx_use_proxy_protocol: True
 nginx_proxy_protocol_real_ips:
   - 172.31.0.0/16
-freefeed_react_client_enabled: False
+freefeed_react_client_enabled: true
 freefeed_react_client_repo: https://github.com/freefeed/freefeed-react-client.git
 freefeed_react_client_branch: release
+freefeed_react_client_hostname: beta.freefeed.net
 pepyatka_auth_cookie_domain: freefeed.net
 pepyatka_auth_token_prefix: freefeed_

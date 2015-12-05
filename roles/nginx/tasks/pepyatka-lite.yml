@@ -70,6 +70,31 @@
     - pepyatka
     - nginx
 
+- name: Install webpack globally
+  npm: name=webpack state=latest global=yes
+  tags:
+    - pepyatka
+    - nginx
+
+- name: Kill local node_modules
+  file: path=/var/www/pepyatka-lite/node_modules state=absent
+  when: pepyatka-lite | changed
+  tags:
+    - pepyatka
+    - nginx
+
+- name: Install pepyatka-lite dependencies
+  npm: path=/var/www/pepyatka-lite state=latest
+  tags:
+    - pepyatka
+    - nginx
+
+- name: Build the bundle 
+  command: chdir=/var/www/pepyatka-lite webpack --config config.js
+  tags:
+    - pepyatka
+    - nginx
+
 - name: Deploy md5 script
   copy: src=write_hash.sh dest=/var/www/pepyatka-lite/ mode=0755
   tags:
@@ -82,9 +107,9 @@
     - pepyatka
     - nginx
 
-- name: Update ga account in parser.js
+- name: Update ga account
   replace:
-    dest: /var/www/pepyatka-lite/parser.js
+    dest: /var/www/pepyatka-lite/config.json
     regexp: "UA-0-1"
     replace: "{{ pepyatka_ga_account }}"
   tags:

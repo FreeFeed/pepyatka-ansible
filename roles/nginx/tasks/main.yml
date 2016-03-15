@@ -1,9 +1,6 @@
 ---
 # file: nginx/tasks/main.yml
 
-- fail: msg="Nginx role is only supported for Ubuntu"
-  when: ansible_distribution != 'Ubuntu'
-
 - name: Ensure git is installed
   apt: name=git state=present
   tags:
@@ -11,7 +8,7 @@
     - nginx
 
 - name: Install jake
-  npm: name=jake global=yes state=latest
+  command: npm install --global jake
   tags:
     - pepyatka
     - nginx
@@ -33,14 +30,19 @@
 - include: pepyatka-lite.yml
   when: pepyatka_lite_enabled
 
+- name: Add apt key for the nginx repository
+  apt_key: url="http://nginx.org/keys/nginx_signing.key" state=present
+  tags:
+    - redis
+
 - name: Add nginx apt repository
-  apt_repository: repo='ppa:nginx/stable' state=present
+  apt_repository: repo="deb http://nginx.org/packages/debian/ {{ ansible_lsb.codename }} nginx"
   tags:
     - pepyatka
     - nginx
 
 - name: Install nginx
-  apt: name=nginx state=present update_cache=true
+  apt: name=nginx state=present update_cache=yes force=yes
   tags:
     - pepyatka
     - nginx
@@ -126,7 +128,7 @@
     - nginx
 
 - name: Reload nginx config
-  service: name=nginx state=reloaded
+  command: /etc/init.d/nginx reload
   tags:
     - pepyatka
     - nginx

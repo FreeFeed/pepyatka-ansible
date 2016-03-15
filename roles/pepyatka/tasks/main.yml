@@ -1,10 +1,7 @@
 ---
 
-- fail: msg="Pepyatka server is only supported for Ubuntu"
-  when: ansible_distribution != 'Ubuntu'
-
 - name: Install required packages
-  apt: name={{ item }} state=present
+  apt: name={{ item }} state=present force=yes
   with_items:
     - graphicsmagick
     - git
@@ -21,8 +18,8 @@
   tags: pepyatka
 
 - name: Deploy pepyatka-server
-  sudo: yes
-  sudo_user: "{{ pepyatka_user }}"
+  become: yes
+  become_user: "{{ pepyatka_user }}"
   git:
     repo: "{{ pepyatka_server_repo }}"
     update: yes
@@ -88,37 +85,36 @@
   tags: pepyatka
 
 - name: Install pepyatka-server dependencies
-  sudo: yes
-  sudo_user: "{{ pepyatka_user }}"
   npm: path="{{ pepyatka_home_dir }}/pepyatka-server" state=latest
   tags: pepyatka
 
-- name: Deploy upstart config files
-  template: src=pepyatka.upstart.j2 dest=/etc/init/pepyatka-{{ item }}.conf
-  with_items: pepyatka_server_instances
-  register: upstart_config
+- name: Deploy pepyatka@.service
+  template: src=pepyatka@.service.j2 dest=/lib/systemd/system/pepyatka@.service
+  register: systemd_service
+  tags: pepyatka
+
+- name: Deploy pepyatka.target
+  copy: src=pepyatka.target dest=/lib/systemd/system/
   tags: pepyatka
 
 - name: Deploy logrotate config for pepyatka instances
   template: src=logrotate.j2 dest=/etc/logrotate.d/pepyatka
   tags: pepyatka
 
-- name: Check if pepyatka is up and running
-  wait_for: host=localhost port={{ item }} timeout=1 state=started
-  with_items: pepyatka_server_instances
-  register: pepyatka_running
+- name: Run systemctl daemon-reload
+  command: systemctl daemon-reload
   tags: pepyatka
 
 - name: Start pepyatka-server instances
-  service: name=pepyatka-{{ item }} state=started enabled=yes
+  service: name="pepyatka@{{ item }}.service" state=started enabled=yes
   with_items: pepyatka_server_instances
-  when: not pepyatka_running
+  register: started_pepyatka
   tags: pepyatka
 
 - name: Restart pepyatka-server instances
-  service: name=pepyatka-{{ item }} state=restarted
+  service: name="pepyatka@{{ item }}.service" state=restarted
   with_items: pepyatka_server_instances
-  when: pepyatka_running and (pepyatka_server.before != pepyatka_server.after)
+  when: pepyatka_server is defined and (pepyatka_server.before != pepyatka_server.after)
   tags: pepyatka
 
 - name: Ensure pepyatka is up and running

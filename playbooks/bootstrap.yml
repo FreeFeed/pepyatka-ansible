@@ -6,12 +6,18 @@
   roles:
     - security
   tasks:
+    - name: Install apt-transport-https
+      apt: name=apt-transport-https state=present force=yes
+      tags:
+        - bootstrap
+
     - name: Install required packages
-      apt: name={{ item }} state=present update_cache=yes
+      apt: name={{ item }} state=present update_cache=yes force=yes
       with_items:
         - python-pip
         - python-dev
         - git
+        - sudo
       tags:
         - bootstrap
 
@@ -20,11 +26,7 @@
       with_items:
         - dogapi
         - httplib2
-      tags:
-        - bootstrap
-
-    - name: Install ansible
-      pip: name=ansible state=present version=1.9.4
+        - ansible
       tags:
         - bootstrap
 

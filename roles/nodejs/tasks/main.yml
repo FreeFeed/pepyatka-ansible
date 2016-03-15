@@ -1,8 +1,5 @@
 ---
 
-- fail: msg="NodeJS is only supported for Ubuntu"
-  when: ansible_distribution != 'Ubuntu'
-
 - name: Add apt key for the nodesource repository
   apt_key: url="https://deb.nodesource.com/gpgkey/nodesource.gpg.key" state=present
   tags:
@@ -13,13 +10,12 @@
   tags:
     - nodejs
 
-- name: Ensure iojs is uninstalled
-  apt: name=iojs state=absent
-  tags:
-    - nodejs
-
 - name: Install NodeJS packages
-  apt: name=nodejs state=latest force=yes
+  apt: name=nodejs state=latest force=yes update_cache=yes
   tags:
     - nodejs
 
+- name: Update alternatives
+  alternatives: name=node path=/usr/bin/nodejs link=/usr/bin/node
+  tags:
+    - nodejs

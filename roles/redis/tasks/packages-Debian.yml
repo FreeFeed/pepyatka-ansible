@@ -1,7 +1,16 @@
 ---
 
+- name: Add apt key for the dotdeb repository
+  apt_key: url="https://www.dotdeb.org/dotdeb.gpg" state=present
+  tags:
+    - redis
+
 - name: Add Redis repository
-  apt_repository: repo='ppa:rwky/redis' update_cache=True
+  apt_repository: repo="deb http://packages.dotdeb.org {{ ansible_lsb.codename }} all"
+  tags:
+    - redis
 
 - name: Install redis-server
-  apt: pkg=redis-server state=present
+  apt: name=redis-server state=present update_cache=yes force=yes
+  tags:
+    - redis

@@ -1,0 +1,23 @@
+[Unit]
+Description=pepyatka-server instance
+After=network.target
+PartOf=pepyatka.target
+
+[Service]
+User={{ pepyatka_user }}
+Group={{ pepyatka_group }}
+Restart=on-failure
+WorkingDirectory={{ pepyatka_home_dir }}/pepyatka-server
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=pepyatka-%I
+Environment=NODE_PATH=/usr/lib/node_modules
+Environment=NODE_ENV={{ pepyatka_node_env }}
+Environment=PEPYATKA_SERVER_PORT=%I
+Environment=LOG_DIR=/var/log/pepyatka
+Environment=MONITOR_PREFIX={{ pepyatka_statsd_prefix }}
+ExecStart=/usr/bin/npm start
+ExecStop=/usr/bin/npm stop
+
+[Install]
+WantedBy=pepyatka.target

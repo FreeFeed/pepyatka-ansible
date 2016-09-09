@@ -74,7 +74,9 @@
     dest: "{{ pepyatka_home_dir }}/pepyatka-server/knexfile.js"
     owner: "{{ pepyatka_user }}"
     group: "{{ pepyatka_group }}"
-  tags: pepyatka
+  tags:
+    - pepyatka
+    - knex-config
 
 - name: Create directories for attachments, thumbnails and profile pictures
   file:

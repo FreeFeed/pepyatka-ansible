@@ -1,0 +1,73 @@
+---
+
+hosted_zone: freefeed.net
+
+route53_records:
+  - name: candy.freefeed.net
+    value: 54.229.211.175
+    type: A
+    ttl: 300
+  - name: micropeppa.freefeed.net
+    value: 54.171.35.242
+    type: A
+    ttl: 300
+  - name: clio.freefeed.net
+    value: 136.243.23.88
+    type: A
+    ttl: 300
+  - name: vonnegut.freefeed.net
+    value: 136.243.23.88
+    type: A
+    ttl: 1800
+  - name: api.freefeed.net
+    value: freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: dev.freefeed.net
+    value: vonnegut.freefeed.net
+    type: CNAME
+    ttl: 300
+  - name: developer.freefeed.net
+    value: freefeed.github.io.
+    type: CNAME
+    ttl: 300
+  - name: gamma.freefeed.net
+    value: gamma.creagenics.com.
+    type: CNAME
+    ttl: 300
+  - name: m.freefeed.net
+    value: freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: media.freefeed.net
+    value: freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: nanopeppa.freefeed.net
+    value: micropeppa.freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: george.freefeed.net
+    value: micropeppa.freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: news.freefeed.net
+    value: freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: stable.freefeed.net
+    value: candy.freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: status.freefeed.net
+    value: vonnegut.freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: unstable.freefeed.net
+    value: micropeppa.freefeed.net.
+    type: CNAME
+    ttl: 300
+  - name: www.freefeed.net
+    value: freefeed.net.
+    type: CNAME
+    ttl: 60

@@ -1,0 +1,15 @@
+---
+language: python
+python: "2.7"
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  - sudo pip install --upgrade pip
+  - sudo pip install --upgrade ansible boto
+
+script:
+  - echo $ANSIBLE_VAULT_PASSWORD > ~/.pepyatka.vault
+  - rm -rf plugins/callback
+  - ansible-playbook -vv -i local aws/route53.yml

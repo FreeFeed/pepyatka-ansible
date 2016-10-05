@@ -1,0 +1,16 @@
+---
+
+- hosts: aws
+  gather_facts: no
+  tasks:
+    - name: Create Route53 records
+      local_action: route53
+      args:
+        command: create
+        overwrite: no
+        zone: "{{ hosted_zone }}"
+        record: "{{ item.name }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+        ttl: "{{ item.ttl }}"
+      with_items: "{{ route53_records }}"

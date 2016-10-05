@@ -10,5 +10,5 @@ install:
 
 script:
   - echo $ANSIBLE_VAULT_PASSWORD > ~/.pepyatka.vault
-  - ansible-playbook -vv -i local aws/route53.yml --syntax-check
+  - rm -rf plugins/callback/datadog.*
   - ansible-playbook -vv -i local aws/route53.yml

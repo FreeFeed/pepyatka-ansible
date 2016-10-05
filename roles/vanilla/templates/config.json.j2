@@ -1,0 +1,21 @@
+var gConfig = {
+  "serverURL":"{{ pepyatka_frontend_scheme }}://{{ vanilla_hostname }}/v1/"
+, "front":"{{ pepyatka_frontend_scheme }}://{{ vanilla_hostname }}/"
+, "static":"{{ pepyatka_frontend_scheme }}://{{ vanilla_hostname }}/s/"
+, "rtURL":"{{ pepyatka_frontend_scheme }}://{{ vanilla_hostname }}/socket.io/"
+, "offset":"30"
+, "likesFold":4
+, "tokenPrefix":"{{ auth_token_prefix }}"
+, "ga":"{{ pepyatka_ga_account }}"
+, "leadDomain":"{{ vanilla_lead_domain }}"
+, "domains":["FreeFeed", "micropeppa", "Mokum"]
+};
+
+var gCryptoPrivateCfg = {
+  "srvurl":"https://moimosk.ru/cgi/secret"
+, "mul":10
+, "authurl": "https://moimosk.ru/v1/"
+, "sk":16
+, "encId":"MATRIX"
+, "feed":"crypto-matrix"
+};

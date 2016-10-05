@@ -1,4 +1,0 @@
----
-- hosts: elasticsearch
-  roles:
-    - elasticsearch

@@ -5,23 +5,23 @@ vault_password_file: pepyatka.vault
 ansible_ssh_user: admin
 
 pepyatka_server_repo: https://github.com/freefeed/freefeed-server.git
-pepyatka_html_repo: https://github.com/freefeed/freefeed-html.git
 pepyatka_ansible_repo: https://github.com/freefeed/freefeed-ansible.git
-pepyatka_lite_repo: https://github.com/freefeed/freefeed-lite.git
-freefeed_react_client_repo: https://github.com/freefeed/freefeed-react-client.git
+vanilla_repo: https://github.com/freefeed/freefeed-lite.git
+react_client_repo: https://github.com/freefeed/freefeed-react-client.git
 
-pepyatka_html_enabled: True
 pepyatka_mailer_smtp_enabled: True
 pepyatka_mailer_from_name: FreeFeed.net
 pepyatka_mailer_from_email: freefeed.net@gmail.com
 pepyatka_onboarding_username: welcome
-pepyatka_auth_cookie_domain: freefeed.net
-pepyatka_local_storage_whoami_cache_key: whoamiCache
+
 pepyatka_node_env: production
-pepyatka_frontend_scheme: https
 pepyatka_server_host: localhost
 pepyatka_files_dir: /var/pepyatka-files
 pepyatka_file_size_limit: '50mb'
 pepyatka_storage_type: s3
 
+auth_cookie_domain: freefeed.net
+local_storage_whoami_cache_key: whoamiCache
+
 nginx_client_max_body_size: '50M'
+

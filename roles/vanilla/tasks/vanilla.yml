@@ -1,0 +1,55 @@
+---
+
+- name: Ensure git is installed
+  apt: name=git state=present
+
+- name: Deploy vanilla
+  git:
+    repo: "{{ vanilla_repo }}"
+    update: yes
+    dest: "{{ vanilla_dir }}"
+    version: "{{ vanilla_branch }}"
+    force: yes
+  register: vanilla
+
+- name: Save changelog in a file
+  shell: echo "{{ vanilla.before }}...{{ vanilla.after }}" > /tmp/vanilla-changelog
+  when: vanilla.before != vanilla.after
+
+- name: Fetch vanilla changelog
+  fetch:
+    src=/tmp/vanilla-changelog
+    dest="vanilla-changelog/{{ inventory_hostname }}"
+    flat=yes
+  when: vanilla.before != vanilla.after
+
+- name: Deploy vanilla config
+  template: src=config.json.j2 dest="{{ vanilla_dir }}/config.json"
+
+- name: Kill local node_modules
+  file: path="{{ vanilla_dir }}/node_modules" state=absent
+  when: vanilla.before != vanilla.after
+
+- name: Install vanilla dependencies
+  npm: path="{{ vanilla_dir }}" state=latest
+
+- name: Build the bundle
+  environment:
+    ___BUILD___: "stable_{{ vanilla.after | truncate(8, True, '') }}"
+  command: ./node_modules/.bin/webpack --config config.js
+  args:
+    chdir: "{{ vanilla_dir }}"
+
+- name: Deploy md5 script
+  copy: src=write_hash.sh dest="{{ vanilla_dir }}/write_hash.sh" mode=0755
+
+- name: Append md5 hashes to file urls
+  command: chdir="{{ vanilla_dir }}" ./write_hash.sh
+
+- name: Fix pepyatka-lite permissions
+  file:
+    path: "{{ vanilla_dir }}"
+    owner: "{{ www_user }}"
+    group: "{{ www_group }}"
+    state: directory
+    recurse: yes

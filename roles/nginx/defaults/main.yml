@@ -2,31 +2,23 @@
 
 www_user: www-data
 www_group: www-data
+
+pepyatka_frontend_scheme: http
 pepyatka_server_host: localhost
 pepyatka_server_instances:
   - 3000
-pepyatka_frontend_scheme: http
 pepyatka_files_dir: /var/pepyatka-files
 pepyatka_s3_bucket: ""
+pepyatka_ga_account: "UA-XXXXXX"
+
 nginx_client_max_body_size: '10M'
 nginx_use_proxy_protocol: False
 nginx_proxy_protocol_real_ips: []
-pepyatka_ga_account: "UA-XXXXXX"
-pepyatka_html_enabled: True
-pepyatka_html_repo: https://github.com/pepyatka/pepyatka-html.git
-pepyatka_html_branch: master
-pepyatka_html_hostname: localhost
-ember_client_basic_auth_enabled: False
-freefeed_react_client_enabled: False
-freefeed_react_client_repo: https://github.com/freefeed/freefeed-react-client.git
-freefeed_react_client_branch: unstable
-freefeed_react_client_hostname: localhost
-freefeed_react_client_basic_auth_enabled: False
-pepyatka_lite_enabled: False
-pepyatka_lite_repo: https://github.com/freefeed/freefeed-lite.git
-pepyatka_lite_branch: master
-pepyatka_lite_hostname: localhost
-pepyatka_local_storage_whoami_cache_key: whoamiCache
-freefeed_recaptcha_sitekey: ""
+
+react_client_basic_auth_enabled: False
+react_client_dir: /var/www/freefeed-react-client
+
+vanilla_enabled: False
+vanilla_dir: /var/www/pepyatka-lite
+vanilla_hostname: localhost
 vanilla_lead_domain: localhost
-sentry_dsn: 'https://0123456789abcdef0123456789abcdef@app.getsentry.com/12345'

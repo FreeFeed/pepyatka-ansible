@@ -1,4 +1,7 @@
 ---
 - hosts: pepyatka-frontend
   roles:
+    - nodejs
+    - react-client
+    - vanilla
     - nginx

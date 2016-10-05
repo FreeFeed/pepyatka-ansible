@@ -10,18 +10,16 @@
       file: path="playbooks/{{ item }}" state=absent
       with_items:
         - pepyatka-server-changelog
-        - pepyatka-html-changelog
-        - pepyatka-lite-changelog
-        - freefeed-react-client-changelog
+        - vanilla-changelog
+        - react-client-changelog
       when: slack_token is defined
       tags:
         - changelog
 
-- include: elasticsearch.yml
 - include: redis.yml
 - include: postgres.yml
 - include: pepyatka.yml
-- include: nginx.yml
+- include: pepyatka-frontend.yml
 
 - post_tasks:
   hosts: all

@@ -1,12 +1,18 @@
-[aws]
+[target]
 localhost
 
-[pepyatka]
-localhost
+[aws:children]
+target
 
-[nginx]
-localhost
+[redis:children]
+target
 
-[redis]
-localhost
+[postgres:children]
+target
+
+[pepyatka:children]
+target
+
+[pepyatka-frontend:children]
+target
 

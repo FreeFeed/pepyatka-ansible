@@ -1,13 +1,12 @@
 ---
 
+pepyatka_frontend_scheme: https
 pepyatka_ansible_branch: development
-pepyatka_lite_branch: development
+vanilla_branch: development
 vanilla_lead_domain: micropeppa
 pepyatka_redis_host: localhost
 pepyatka_s3_bucket: freefeed-storage-test
-freefeed_recaptcha_enabled: false
+recaptcha_enabled: false
 postgres_port: 5432
 postgres_user: stagefeed
 postgres_dbname: stagefeed
-ember_client_basic_auth_enabled: True
-freefeed_react_client_basic_auth_enabled: True

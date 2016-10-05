@@ -8,7 +8,7 @@ target
 [pepyatka:children]
 target
 
-[nginx:children]
+[pepyatka-frontend:children]
 target
 
 [staging:children]

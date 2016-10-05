@@ -1,4 +1,0 @@
----
-- hosts: pepyatka
-  roles:
-    - nodejs

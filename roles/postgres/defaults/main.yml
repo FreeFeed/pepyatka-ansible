@@ -1,0 +1,6 @@
+---
+
+postgres_host: localhost
+postgres_dbname: freefeed
+postgres_user: freefeed
+postgres_pass: freefeed

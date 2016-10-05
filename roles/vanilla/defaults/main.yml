@@ -1,0 +1,15 @@
+---
+
+www_user: www-data
+www_group: www-data
+
+vanilla_dir: /var/www/pepyatka-lite
+vanilla_repo: https://github.com/freefeed/freefeed-lite.git
+vanilla_branch: master
+vanilla_hostname: localhost
+vanilla_lead_domain: localhost
+
+pepyatka_frontend_scheme: http
+auth_token_prefix: dummy_
+
+pepyatka_ga_account: "UA-XXXXXX"

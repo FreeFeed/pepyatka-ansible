@@ -7,9 +7,11 @@ cd $BASE_DIR >/dev/null
 SCRIPT_FILE=$(basename ${BASH_SOURCE[0]})
 LOG_FILE={{ pepyatka_deploy_log_dir }}/check-deploy.log
 
+{% if slack_token is defined %}
 export SLACK_TOKEN='{{ slack_token }}'
 export SLACK_USERNAME=Ansible
 export SLACK_CHANNEL='#deerployment'
+{% endif %}
 export ANSIBLE_LOG_PATH=$LOG_FILE
 
 echo >> $LOG_FILE
@@ -40,24 +42,19 @@ check_repo() {
 }
 
 SERVER_STATUS=$(check_repo pepyatka-server {{ pepyatka_server_branch }})
-{% if pepyatka_html_enabled %}
-HTML_STATUS=$(check_repo pepyatka-html {{ pepyatka_html_branch }})
+{% if vanilla_enabled %}
+VANILLA_STATUS=$(check_repo vanilla {{ vanilla_branch }})
 {% else %}
-HTML_STATUS=
+VANILLA_STATUS=
 {% endif %}
-{% if pepyatka_lite_enabled %}
-LITE_STATUS=$(check_repo pepyatka-lite {{ pepyatka_lite_branch }})
-{% else %}
-LITE_STATUS=
-{% endif %}
-{% if freefeed_react_client_enabled %}
-REACT_STATUS=$(check_repo freefeed-react-client {{ freefeed_react_client_branch }})
+{% if react_client_enabled %}
+REACT_STATUS=$(check_repo react-client {{ react_client_branch }})
 {% else %}
 REACT_STATUS=
 {% endif %}
 ANSIBLE_STATUS=$(check_repo pepyatka-ansible {{ pepyatka_ansible_branch }})
 
-if [ "${SERVER_STATUS}" = updated ] || [ "${HTML_STATUS}" = updated ] || [ "${LITE_STATUS}" = updated ] || [ "${REACT_STATUS}" = updated ] || [ "${ANSIBLE_STATUS}" = updated ] || [ "${USE_FORCE_LUKE}" = yes ]; then
+if [ "${SERVER_STATUS}" = updated ] || [ "${VANILLA_STATUS}" = updated ] || [ "${REACT_STATUS}" = updated ] || [ "${ANSIBLE_STATUS}" = updated ] || [ "${USE_FORCE_LUKE}" = yes ]; then
     cd pepyatka-ansible >/dev/null
 {% if vault_password_file is defined %}
     ansible-playbook -i {{ pepyatka_deploy_inventory }} playbooks/site.yml -l {{ pepyatka_hostname }} --connection=local --vault-password-file=/root/pepyatka.vault

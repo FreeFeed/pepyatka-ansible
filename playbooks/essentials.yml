@@ -1,0 +1,30 @@
+---
+
+- hosts: all
+  become: yes
+  roles:
+    - security
+    - swap
+  tasks:
+    - name: Install apt-transport-https
+      apt: name=apt-transport-https state=present force=yes
+
+    - name: Install required packages
+      apt: name="{{ item }}" state=present update_cache=yes force=yes
+      with_items:
+        - python-pip
+        - python-dev
+        - git
+        - sudo
+        - mosh
+        - tmux
+        - fish
+        - silversearcher-ag
+
+    - name: Install required python modules
+      pip: name="{{ item }}" state=latest
+      with_items:
+        - dogapi
+        - httplib2
+        - ansible
+        - markupsafe

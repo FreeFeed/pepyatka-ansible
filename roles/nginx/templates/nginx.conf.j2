@@ -1,7 +1,3 @@
-# For more information on configuration, see:
-#   * Official English Documentation: http://nginx.org/en/docs/
-#   * Official Russian Documentation: http://nginx.org/ru/docs/
-
 user  {{ www_user }};
 worker_processes  {{ ansible_processor_vcpus }};
 
@@ -24,15 +20,15 @@ http {
 {% for ip in nginx_proxy_protocol_real_ips %}
     set_real_ip_from {{ ip }};
 {% endfor %}
+    log_format elb_log '$proxy_protocol_addr - $remote_user [$time_local] '
+                       '"$request" $status $body_bytes_sent "$http_referer" '
+                       '"$http_user_agent"';
+
 {% endif %}
 
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
-
-    log_format elb_log '$proxy_protocol_addr - $remote_user [$time_local] '
-                       '"$request" $status $body_bytes_sent "$http_referer" '
-                       '"$http_user_agent"';
 
     access_log  /var/log/nginx/access.log  main;
 
@@ -53,111 +49,38 @@ http {
 {% endfor %}
     }
 
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    news.freefeed.net;
-      return         301 http://freefeed.net/freefeed;
-    }
-
 {% if server_cert is defined %}
-{% if pepyatka_html_enabled %}
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    {{ pepyatka_html_hostname }};
-      return         301 https://$server_name$request_uri;
-    }
-{% endif %}
-{% if pepyatka_lite_enabled %}
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    {{ pepyatka_lite_hostname }};
-      return         301 https://$server_name$request_uri;
-    }
-{% endif %}
-{% if freefeed_react_client_enabled %}
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    {{ freefeed_react_client_hostname }};
-      return         301 https://$server_name$request_uri;
-    }
-{% endif %}
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    news.freefeed.net;
-      return         301 https://freefeed.net/freefeed;
-    }
-{% endif %}
-
     server {
       server_name _;
       include pepyatka-ssl.conf;
       return 301 $scheme://{{ pepyatka_hostname }}$request_uri;
     }
+{% endif %}
 
    server {
      server_name {{ pepyatka_media_hostname }};
      include pepyatka-ssl.conf;
      location = / {
-       return https://{{ pepyatka_hostname }}/;
-     }
-     location / {
-       resolver 169.254.169.253 valid=30s;
        access_log off;
        log_not_found off;
        expires max;
        if ($request_method !~ ^(GET|HEAD)$ ) {
          return 405;
        }
-       proxy_pass https://{{ pepyatka_s3_bucket }}.s3.amazonaws.com;
        add_header Access-Control-Allow-Origin '*' always;
        add_header Access-Control-Allow-Methods 'GET,HEAD' always;
-     }
-   }
-
-{% if pepyatka_html_enabled %}
-   server {
-     server_name {{ pepyatka_html_hostname }};
-     access_log /var/log/nginx/{{ pepyatka_html_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
-     include pepyatka-common.conf;
-
-     location ~ ^/(css|js|img|fonts)/.*$ {
-       root /var/www/pepyatka-html/public;
-       access_log off;
-       expires max;
-       try_files $uri $uri/ /index.html?/$request_uri;
-     }
-
-     location / {
-       root /var/www/pepyatka-html/public;
-       access_log off;
-       expires off;
-       try_files $uri $uri/ /index.html?/$request_uri;
-{% if ember_client_basic_auth_enabled %}
-       auth_basic "Restricted Content";
-       auth_basic_user_file /etc/nginx/.htpasswd;
+{% if pepyatka_s3_bucket != "" %}
+       resolver 169.254.169.253 valid=30s;
+       proxy_pass https://{{ pepyatka_s3_bucket }}.s3.amazonaws.com;
 {% endif %}
      }
    }
-{% endif %}
-{% if pepyatka_lite_enabled %}
-   server {
-     server_name {{ pepyatka_lite_hostname }};
-     access_log /var/log/nginx/{{ pepyatka_lite_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
-     include pepyatka-common.conf;
 
-     location / {
-       root /var/www/pepyatka-lite;
-       rewrite ^/s/(.*)$ /$1 break;
-       rewrite ^.* /index.htm break;
-     }
-   }
-{% endif %}
-{% if freefeed_react_client_enabled %}
    server {
-     server_name {{ freefeed_react_client_hostname }};
-     access_log /var/log/nginx/{{ freefeed_react_client_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
+     server_name {{ react_client_hostname }};
+     access_log /var/log/nginx/{{ react_client_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
      include pepyatka-common.conf;
-     root /var/www/freefeed-react-client/public;
+     root {{ react_client_dir }}/public;
 
      # Expire rules for static content
 
@@ -180,7 +103,7 @@ http {
      location / {
        access_log off;
        try_files $uri $uri/ /index.html?/$request_uri;
-{% if freefeed_react_client_basic_auth_enabled %}
+{% if react_client_basic_auth_enabled %}
        auth_basic "Restricted Content";
        auth_basic_user_file /etc/nginx/.htpasswd;
 {% endif %}
@@ -190,6 +113,18 @@ http {
        access_log off;
        expires max;
        try_files $uri =404;
+     }
+   }
+{% if vanilla_enabled %}
+   server {
+     server_name {{ vanilla_hostname }};
+     access_log /var/log/nginx/{{ vanilla_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
+     include pepyatka-common.conf;
+
+     location / {
+       root {{ vanilla_dir }};
+       rewrite ^/s/(.*)$ /$1 break;
+       rewrite ^.* /index.htm break;
      }
    }
 {% endif %}

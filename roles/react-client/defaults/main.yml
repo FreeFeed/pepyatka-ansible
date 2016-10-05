@@ -1,0 +1,20 @@
+---
+
+www_user: www-data
+www_group: www-data
+
+react_client_dir: /var/www/freefeed-react-client
+react_client_repo: https://github.com/freefeed/freefeed-react-client.git
+react_client_branch: unstable
+react_client_hostname: localhost
+
+local_storage_whoami_cache_key: whoamiCache
+auth_cookie_domain: localhost
+auth_token_prefix: dummy_
+recaptcha_sitekey: ""
+sentry_dsn: 'https://0123456789abcdef0123456789abcdef@app.getsentry.com/12345'
+frontend_scheme: http
+
+pepyatka_service_name: "Reactive Pepyatka"
+pepyatka_hostname: localhost
+

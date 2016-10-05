@@ -1,5 +1,0 @@
----
-
-jdk_download_path: /usr/src
-jdk_download_url: http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jdk-8u40-linux-x64.rpm
-jdk_rpm_name: jdk-8u40-linux-x64.rpm

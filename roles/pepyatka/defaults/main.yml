@@ -36,5 +36,5 @@ freefeed_recaptcha_secret: ""
 postgres_host: localhost
 postgres_port: 5432
 postgres_dbname: freefeed
-postgres_user: postgres
-postgres_pass: postgres
+postgres_user: freefeed
+postgres_pass: freefeed

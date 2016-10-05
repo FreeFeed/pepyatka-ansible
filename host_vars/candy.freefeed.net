@@ -6,10 +6,8 @@ pepyatka_media_hostname: micropeppa-media.freefeed.net
 pepyatka_statsd_prefix: candy
 pepyatka_deploy_inventory: staging
 pepyatka_server_branch: stable
-pepyatka_html_enabled: false
-pepyatka_lite_enabled: false
-freefeed_react_client_enabled: true
-freefeed_react_client_branch: stable
-freefeed_react_client_hostname: candy.freefeed.net
-pepyatka_auth_token_prefix: micropeppa_
-freefeed_auth_token_prefix: micropeppaBETA_
+vanilla_enabled: false
+react_client_enabled: true
+react_client_branch: stable
+react_client_hostname: candy.freefeed.net
+auth_token_prefix: micropeppa_

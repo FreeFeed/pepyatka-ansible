@@ -6,12 +6,10 @@ pepyatka_media_hostname: micropeppa-media.freefeed.net
 pepyatka_statsd_prefix: micropeppa
 pepyatka_deploy_inventory: staging
 pepyatka_server_branch: unstable
-pepyatka_html_branch: temp-enable-signup
-pepyatka_lite_enabled: true
-pepyatka_lite_hostname: nanopeppa.freefeed.net
-freefeed_react_client_enabled: true
-freefeed_react_client_branch: unstable
-freefeed_react_client_hostname: george.freefeed.net
-pepyatka_auth_token_prefix: micropeppa_
-freefeed_auth_token_prefix: micropeppaBETA_
+vanilla_enabled: true
+vanilla_hostname: nanopeppa.freefeed.net
+react_client_enabled: true
+react_client_branch: unstable
+react_client_hostname: george.freefeed.net
+auth_token_prefix: micropeppa_
 

@@ -1,11 +1,10 @@
 ---
 
 pepyatka_hostname: freefeed.net
-pepyatka_html_hostname: old.freefeed.net
 pepyatka_media_hostname: media.freefeed.net
+pepyatka_frontend_scheme: https
 pepyatka_statsd_prefix: freefeed
 pepyatka_server_branch: release
-pepyatka_html_branch: release
 pepyatka_ansible_branch: freefeed
 pepyatka_redis_host: localhost
 pepyatka_s3_bucket: freefeed-media
@@ -15,18 +14,21 @@ pepyatka_server_instances:
 pepyatka_accept_hashed_passwords_only: 'false'
 pepyatka_ga_account: 'UA-62517081-1'
 pepyatka_deploy_inventory: prod
-pepyatka_lite_enabled: true
-pepyatka_lite_branch: release
-pepyatka_lite_hostname: m.freefeed.net
+
+react_client_branch: release
+react_client_hostname: freefeed.net
+
+vanilla_enabled: true
+vanilla_branch: release
+vanilla_hostname: m.freefeed.net
 vanilla_lead_domain: FreeFeed
+
 nginx_restrict_users_ip: 136.243.23.88
 nginx_use_proxy_protocol: True
 nginx_proxy_protocol_real_ips:
   - 172.31.0.0/16
-freefeed_react_client_enabled: true
-freefeed_react_client_branch: release
-freefeed_react_client_hostname: freefeed.net
-pepyatka_auth_token_prefix: freefeed_
-freefeed_auth_token_prefix: freefeedBETA_
-freefeed_recaptcha_enabled: true
-freefeed_recaptcha_sitekey: 6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5
+
+auth_token_prefix: freefeed_
+recaptcha_enabled: true
+recaptcha_sitekey: 6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5
+

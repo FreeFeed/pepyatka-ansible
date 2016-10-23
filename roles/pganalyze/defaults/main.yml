@@ -1,0 +1,10 @@
+---
+
+pganalyze_api_key: ""
+pganalyze_db_name: "postgres"
+pganalyze_db_username: "postgres"
+pganalyze_db_password: "postgres"
+pganalyze_db_host: "localhost"
+pganalyze_db_port: 5432
+pganalyze_aws_db_instance_id: ""
+pganalyze_aws_region: ""

@@ -1,0 +1,20 @@
+---
+
+- name: Import pganalyze collector pgp key
+  become: yes
+  apt_key: url=https://packagecloud.io/pganalyze/collector/gpgkey state=present
+
+- name: Add pganalyze collector repo
+  become: yes
+  apt_repository: repo='deb https://packagecloud.io/pganalyze/collector/debian/ jessie main' state=present
+
+- name: Install packages
+  become: yes
+  apt: name="{{ item }}" state=present update_cache=yes
+  with_items:
+    - pganalyze-collector
+
+- name: Deploy pganalyze-collector config
+  become: yes
+  template: src=pganalyze-collector.conf.j2 dest=/etc/pganalyze-collector.conf
+

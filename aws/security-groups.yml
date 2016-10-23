@@ -1,0 +1,18 @@
+---
+
+- hosts: aws
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: Create security group for building AMIs
+      ec2_group:
+        name: build-ami-sg
+        description: Security group for building AMI (ssh access from any)
+        region: "{{ region }}"
+        vpc_id: "{{ vpc_id }}"
+        state: present
+        rules:
+          - proto: tcp
+            cidr_ip: 0.0.0.0/0
+            from_port: 22
+            to_port: 22

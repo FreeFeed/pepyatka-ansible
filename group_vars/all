@@ -18,7 +18,6 @@ pepyatka_node_env: production
 pepyatka_server_host: localhost
 pepyatka_files_dir: /var/pepyatka-files
 pepyatka_file_size_limit: '50mb'
-pepyatka_storage_type: s3
 
 auth_cookie_domain: freefeed.net
 local_storage_whoami_cache_key: whoamiCache

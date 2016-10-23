@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: all:!localhost
   become: yes
   vars:
     pepyatka_deploy_log_dir: /var/log/pepyatka-deploy

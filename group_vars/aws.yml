@@ -1,6 +1,11 @@
 ---
 
+account: 651335522580
 hosted_zone: freefeed.net
+region: eu-west-1
+vpc_id: vpc-f06ac595
+ami_subnet_id: subnet-228c1747
+base_ami: ami-ff0e758c # jessie 8.6
 
 route53_records:
   - name: candy.freefeed.net

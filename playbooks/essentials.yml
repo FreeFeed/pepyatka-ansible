@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: all:!localhost
   become: yes
   roles:
     - security
@@ -12,13 +12,15 @@
     - name: Install required packages
       apt: name="{{ item }}" state=present update_cache=yes force=yes
       with_items:
-        - python-pip
+        - build-essential
+        - libssl-dev
+        - libffi-dev
         - python-dev
+        - python-pip
         - git
         - sudo
         - mosh
         - tmux
-        - fish
         - silversearcher-ag
         - ntp
 

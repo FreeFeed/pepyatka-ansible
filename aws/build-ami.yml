@@ -1,0 +1,81 @@
+---
+
+- hosts: aws
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: Launch an ami builder instance
+      ec2:
+        key_name: pepyatka-aws
+        instance_type: t2.micro
+        image: "{{ base_ami }}"
+        wait: yes
+        group: build-ami-sg
+        count: 1
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ ami_subnet_id }}"
+      register: ec2
+
+    - name: Print instance ip
+      debug: msg="{{ ec2.instances[0].public_ip }}"
+
+    - name: Print instance id
+      debug: msg="{{ ec2.instances[0].id }}"
+
+    - set_fact:
+        instance_id: "{{ ec2.instances[0].id }}"
+        instance_ip: "{{ ec2.instances[0].public_ip }}"
+
+    - name: Add new instance to the host group
+      add_host:
+        hostname="{{ instance_ip }}"
+        groups=target
+
+    - name: Wait for SSH
+      wait_for: host="{{ instance_ip }}" port=22 delay=90 timeout=320 state=started
+
+    - pause: prompt="Wait a bit more" seconds=2
+
+- include: ../playbooks/essentials.yml
+- include: ../playbooks/admins.yml
+
+- hosts: target
+  become: yes
+  roles:
+    - pganalyze
+  tasks:
+    - name: Stop and disable pganalyze-collector
+      service: name=pganalyze-collector state=stopped enabled=false
+
+    - name: Install ansible
+      pip: name=ansible state=present
+
+    - name: Clone freefeed-ansible
+      git:
+        repo: "{{ pepyatka_ansible_repo }}"
+        dest: /opt/freefeed-ansible
+        force: yes
+
+- hosts: ami_control_host
+  connection: local
+  gather_facts: false
+  become: no
+  tasks:
+    - name: Build AMI
+      ec2_ami:
+        instance_id: "{{ instance_id }}"
+        wait: yes
+        name: freefeed-api-server
+        region: "{{ region }}"
+        tags:
+          Name: freefeed-api-server
+      register: ami
+
+    - debug: var=ami
+
+    - name: Terminate ami builder instance
+      ec2:
+        state: absent
+        instance_ids: "{{ instance_id }}"
+        region: "{{ region }}"
+

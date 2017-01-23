@@ -1,19 +1,23 @@
-import {production as postgresConfig} from '../../knexfile'
+import { {{ pepyatka_node_env }} as postgresConfig} from '../../knexfile'
+
+process.env.MONITOR_PREFIX = '{{ pepyatka_node_env }}'
 
 var fs = require('fs')
-var nodemailer = require('nodemailer')
 {% if pepyatka_mailer_smtp_enabled %}
+var nodemailer = require('nodemailer')
 var transport = require('nodemailer-smtp-transport')
 {% else %}
-var transport = {
-  name: 'minimal',
-  version: '0.1.0',
-  send: function(mail, callback) {
-    var input = mail.message.createReadStream();
-    input.pipe(process.stdout);
-    input.on('end', function() {
-      callback(null, true)
-    })
+const transport = function () {
+  return {
+    name:    'minimal',
+    version: '0.1.0',
+    send:    function (mail, callback) {
+      const input = mail.message.createReadStream();
+      input.pipe(process.stdout);
+      input.on('end', () => {
+        callback(null, true)
+      })
+    }
   }
 }
 {% endif %}
@@ -31,6 +35,7 @@ exports.getConfig = function() {
     appRoot: '{{ pepyatka_home_dir}}/pepyatka-server',
     acceptHashedPasswordsOnly: {{ pepyatka_accept_hashed_passwords_only }},
     logLevel: 'warn',
+    logResponseTime: true,
     onboardingUsername: '{{ pepyatka_onboarding_username }}',
     recaptcha: {
       enabled: {{ freefeed_recaptcha_enabled | string | lower }},

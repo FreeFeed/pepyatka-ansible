@@ -216,7 +216,7 @@
     cron_file=freefeed-bestof-emails
     job="cd {{ pepyatka_home_dir }}/pepyatka-server && test -f bin/bestof_emails.js && NODE_ENV={{ pepyatka_node_env }} node_modules/.bin/babel-node bin/bestof_emails.js || true"
     user="{{ pepyatka_user }}"
-    hour=05
+    hour=04
     minute=40
     state=present
   tags:

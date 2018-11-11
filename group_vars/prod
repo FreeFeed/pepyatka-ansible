@@ -22,9 +22,7 @@ vanilla_hostname: m.freefeed.net
 vanilla_lead_domain: FreeFeed
 
 nginx_restrict_users_ip: 136.243.23.88
-nginx_use_proxy_protocol: True
-nginx_proxy_protocol_real_ips:
-  - 172.31.0.0/16
+nginx_load_balancer_source: '172.31.0.0/16'
 
 auth_token_prefix: freefeedBETA_
 recaptcha_enabled: true

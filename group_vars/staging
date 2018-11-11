@@ -12,4 +12,4 @@ postgres_port: 5432
 postgres_user: stagefeed
 postgres_dbname: stagefeed
 public_sentry_dsn: 'https://c0d1b60991264cc4b56a1398db012900@sentry.io/79081'
-server_cert: letsencrypt
+nginx_load_balancer_source: '172.31.0.0/16'

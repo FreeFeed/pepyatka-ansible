@@ -48,19 +48,6 @@
   tags:
     - nginx-config
 
-- name: Deploy nginx ssl config
-  become: yes
-  template: src=pepyatka-ssl.conf.j2 dest=/etc/nginx/pepyatka-ssl.conf
-  tags:
-    - nginx-config
-
-- name: Deploy dhparams.pem
-  become: yes
-  copy: content="{{ nginx_ssl_dhparam }}" dest=/etc/ssl/dhparams.pem
-  when: nginx_ssl_dhparam is defined
-  tags:
-    - nginx-config
-
 - name: Start and enable nginx
   become: yes
   service: name=nginx state=started enabled=yes

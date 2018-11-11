@@ -15,16 +15,7 @@ http {
     default_type  application/octet-stream;
     client_max_body_size {{ nginx_client_max_body_size }};
 
-{% if nginx_use_proxy_protocol %}
-    real_ip_header proxy_protocol;
-{% for ip in nginx_proxy_protocol_real_ips %}
-    set_real_ip_from {{ ip }};
-{% endfor %}
-    log_format elb_log '$proxy_protocol_addr - $remote_user [$time_local] '
-                       '"$request" $status $body_bytes_sent "$http_referer" '
-                       '"$http_user_agent" $request_time $upstream_response_time $pipe';
-
-{% endif %}
+    set_real_ip_from {{ nginx_load_balancer_source }};
 
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
@@ -56,6 +47,7 @@ http {
 
       access_log off;
       allow 127.0.0.1;
+      allow {{ nginx_load_balancer_source }};
       deny all;
 
       location /nginx_status {
@@ -63,55 +55,9 @@ http {
       }
     }
 
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    news.freefeed.net;
-      return         301 http://freefeed.net/freefeed;
-    }
-
-{% if server_cert is defined %}
-{% if vanilla_enabled %}
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    {{ vanilla_hostname }};
-      include        /etc/nginx/letsencrypt-acme-challenge.conf;
-      return         301 https://$server_name$request_uri;
-    }
-{% endif %}
-
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    {{ react_client_hostname }} www.{{ react_client_hostname }};
-      include        /etc/nginx/letsencrypt-acme-challenge.conf;
-      return         301 https://$server_name$request_uri;
-    }
-
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    {{ pepyatka_media_hostname }};
-      include        /etc/nginx/letsencrypt-acme-challenge.conf;
-      return         301 https://$server_name$request_uri;
-    }
-
-    server {
-      listen         80 {{ nginx_use_proxy_protocol | ternary('proxy_protocol', '') }};
-      server_name    news.freefeed.net;
-      return         301 https://freefeed.net/freefeed;
-    }
-
-    server {
-      server_name _;
-      include pepyatka-ssl.conf;
-      return 301 $scheme://{{ react_client_hostname }}$request_uri;
-    }
-
-{% endif %}
-
 {% if pepyatka_s3_bucket != "" %}
    server {
      server_name {{ pepyatka_media_hostname }};
-     include pepyatka-ssl.conf;
-     include /etc/nginx/letsencrypt-acme-challenge.conf;
      location = / {
        return {{ pepyatka_frontend_scheme }}://{{ react_client_hostname }}/;
      }
@@ -131,11 +77,10 @@ http {
 {% endif %}
 
    server {
+     listen 80;
      server_name {{ react_client_hostname }};
-     access_log /var/log/nginx/{{ react_client_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
+     access_log /var/log/nginx/{{ react_client_hostname }}.log main;
      include pepyatka-common.conf;
-     include /etc/nginx/letsencrypt-acme-challenge.conf;
-     ssi on;
      root {{ react_client_dir }}/public;
 
      # Expire rules for static content
@@ -173,10 +118,10 @@ http {
    }
 {% if vanilla_enabled %}
    server {
+     listen 80;
      server_name {{ vanilla_hostname }};
-     access_log /var/log/nginx/{{ vanilla_hostname }}.log {{ nginx_use_proxy_protocol | ternary('elb_log', 'main') }};
+     access_log /var/log/nginx/{{ vanilla_hostname }}.log main;
      include pepyatka-common.conf;
-     include /etc/nginx/letsencrypt-acme-challenge.conf;
 
      location / {
        root {{ vanilla_dir }};

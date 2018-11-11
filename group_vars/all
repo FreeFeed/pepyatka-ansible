@@ -15,7 +15,6 @@ pepyatka_onboarding_username: welcome
 
 pepyatka_node_env: production
 pepyatka_server_host: localhost
-pepyatka_files_dir: /var/pepyatka-files
 pepyatka_file_size_limit: '50mb'
 
 auth_cookie_domain: freefeed.net

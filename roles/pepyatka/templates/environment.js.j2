@@ -144,6 +144,28 @@ exports.getConfig = function() {
     searchQueriesTimeout: 45000,
   };
 
+  /**
+  * Fill this object with provider-specific credentials like:
+  * facebook: {
+  *   clientId:     '####',
+  *   clientSecret: '####',
+  * }
+  *
+  * Only 'facebook' and 'google' providers are supported for now.
+  */
+  config.externalAuthProviders = {
+  {% if freefeed_external_auth_providers_enabled %}
+    google: {
+      clientId: '{{ freefeed_external_auth_google_client_id }}',
+      clientSecret: '{{ freefeed_external_auth_google_client_secret }}'
+    },
+    facebook: {
+      clientId: '{{ freefeed_external_auth_facebook_client_id }}',
+      clientSecret: '{{ freefeed_external_auth_facebook_client_secret }}'
+    }
+  {% endif %}
+  },
+
   config.postgres = postgresConfig
 
   return config

@@ -12,3 +12,4 @@ react_client_branch: stable
 react_client_hostname: candy.freefeed.net
 auth_token_prefix: micropeppa_
 new_relic_app_name: "FreeFeed Stable"
+freefeed_external_auth_providers_enabled: true

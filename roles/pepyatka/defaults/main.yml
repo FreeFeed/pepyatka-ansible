@@ -41,3 +41,4 @@ postgres_user: freefeed
 postgres_pass: freefeed
 sentry_dsn: ""
 freefeed_cron_log_dir: "/var/log/freefeed-cron"
+freefeed_external_auth_providers_enabled: false

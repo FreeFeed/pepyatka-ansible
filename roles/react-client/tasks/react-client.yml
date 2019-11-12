@@ -23,48 +23,6 @@
     flat=yes
   when: react_client.before != react_client.after
 
-- name: Update service name in index.jade
-  replace:
-    dest: "{{ react_client_dir }}/index.jade"
-    regexp: "Reactive Pepyatka"
-    replace: "{{ pepyatka_service_name }}"
-
-- name: Update api.host in src/config.js
-  replace:
-    dest: "{{ react_client_dir }}/src/config.js"
-    regexp: "    host:.*"
-    replace: "    host: '{{ pepyatka_frontend_scheme }}://{{ react_client_hostname }}',"
-
-- name: Update cookie domain in src/config.js
-  replace:
-    dest: "{{ react_client_dir }}/src/config.js"
-    regexp: "    cookieDomain.*"
-    replace: "    cookieDomain: '{{ auth_cookie_domain }}',"
-
-- name: Update tokenPrefix in src/config.js
-  replace:
-    dest: "{{ react_client_dir }}/src/config.js"
-    regexp: "tokenPrefix:.*"
-    replace: "tokenPrefix: '{{ auth_token_prefix }}',"
-
-- name: Update whoAmI cache key in src/config.js
-  replace:
-    dest: "{{ react_client_dir }}/src/config.js"
-    regexp: "userStorageKey.*"
-    replace: "userStorageKey: '{{ local_storage_whoami_cache_key }}',"
-
-- name: Update captcha.siteKey in src/config.js
-  replace:
-    dest: "{{ react_client_dir }}/src/config.js"
-    regexp: "siteKey.*"
-    replace: "siteKey: '{{ recaptcha_client_secret }}',"
-
-- name: Update Sentry DSN in src/config.js
-  replace:
-    dest: "{{ react_client_dir }}/src/config.js"
-    regexp: "publicDSN.*"
-    replace: "publicDSN: '{{ public_sentry_dsn }}',"
-
 - name: Kill local node_modules
   file: path="{{ react_client_dir }}/node_modules" state=absent
   when: react_client.before != react_client.after
@@ -77,35 +35,6 @@
   args:
     chdir: "{{ react_client_dir }}"
 
-- name: Update server url in bookmarklet*.js
-  replace:
-    dest: "{{ react_client_dir }}/assets/js/{{ item }}"
-    regexp: "http://localhost:3333"
-    replace: "{{ pepyatka_frontend_scheme }}://{{ pepyatka_hostname }}"
-  with_items:
-    - bookmarklet.js
-    - bookmarklet.min.js
-  tags:
-    - pepyatka
-    - nginx
-
-- name: Replace host in bookmarklet-popup.js
-  replace:
-    dest: "{{ react_client_dir }}/assets/js/bookmarklet-popup.js"
-    regexp: "\\+ host \\+"
-    replace: "+ '{{ pepyatka_frontend_scheme }}://{{ pepyatka_hostname }}' +"
-
-- name: Read bookmarklet.min.js
-  shell: cat "{{ react_client_dir }}/assets/js/bookmarklet.min.js"
-  register: bookmarklet_min_js_content
-  changed_when: false
-
-- name: Populate BOOKMARKLET_PLACEHOLDER
-  replace:
-    dest: "{{ react_client_dir }}/src/components/sidebar.jsx"
-    regexp: "BOOKMARKLET_PLACEHOLDER"
-    replace: "{{ bookmarklet_min_js_content.stdout }}"
-
 - name: Build assets
   command: make prod out_dir="{{ react_client_dir }}/public"
   args:
@@ -114,8 +43,13 @@
 - name: Ensure "{{ react_client_dir }}/public/js"
   file: path="{{ react_client_dir }}/public/js" state=directory
 
-- name: Copy bookmarklet-popup.js to the legacy location
-  command: cp "{{ react_client_dir }}/public/assets/js/bookmarklet-popup.js" "{{ react_client_dir }}/public/js/"
+- name: Ensure "{{ react_client_dir }}/config"
+  file: path="{{ react_client_dir }}/config" state=directory
+
+- name: Fetch local.json
+  shell: "aws s3 cp s3://freefeed-config/{{ react_client_branch }}/local.json ./"
+  args:
+    chdir: "{{ react_client_dir }}/config"
 
 - name: Fix permissions
   file:

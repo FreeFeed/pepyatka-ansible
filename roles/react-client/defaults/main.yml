@@ -8,13 +8,3 @@ react_client_repo: https://github.com/freefeed/freefeed-react-client.git
 react_client_branch: stable
 react_client_hostname: "{{ inventory_hostname }}"
 
-local_storage_whoami_cache_key: whoamiCache
-auth_cookie_domain: "{{ inventory_hostname }}"
-auth_token_prefix: dummy_
-recaptcha_client_secret: ""
-public_sentry_dsn: 'https://0123456789abcdef0123456789abcdef@app.getsentry.com/12345'
-frontend_scheme: http
-
-pepyatka_service_name: "Reactive Pepyatka"
-pepyatka_hostname: "{{ inventory_hostname }}"
-

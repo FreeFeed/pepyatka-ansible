@@ -47,7 +47,7 @@
   file: path="{{ react_client_dir }}/config" state=directory
 
 - name: Fetch local.json
-  shell: "aws s3 cp s3://freefeed-config/{{ react_client_branch }}/local.json ./"
+  shell: "aws s3 cp s3://freefeed-config/freefeed-react-client/{{ react_client_branch }}/local.json ./"
   args:
     chdir: "{{ react_client_dir }}/config"
 

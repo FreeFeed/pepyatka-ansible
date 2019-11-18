@@ -36,20 +36,16 @@
     chdir: "{{ react_client_dir }}"
 
 - name: Build assets
-  command: make prod out_dir="{{ react_client_dir }}/public"
+  command: yarn build-prod
   args:
     chdir: "{{ react_client_dir }}"
-
-- name: Ensure "{{ react_client_dir }}/public/js"
-  file: path="{{ react_client_dir }}/public/js" state=directory
-
-- name: Ensure "{{ react_client_dir }}/config"
-  file: path="{{ react_client_dir }}/config" state=directory
-
-- name: Fetch local.json
-  shell: "aws s3 cp s3://freefeed-config/freefeed-react-client/{{ react_client_branch }}/local.json ./"
-  args:
-    chdir: "{{ react_client_dir }}/config"
+  environment:
+    FRF_API_ROOT: "{{ pepyatka_frontend_scheme }}://{{ react_client_hostname }}"
+    FRF_SITE_ORIGIN: "{{ pepyatka_frontend_scheme }}://{{ react_client_hostname }}"
+    FRF_TOKEN_PREFIX: "{{ auth_token_prefix }}"
+    FRF_USER_STORAGE_KEY: "{{ local_storage_whoami_cache_key }}"
+    FRF_CAPTCHA_SITEKEY: "{{ recaptcha_client_secret }}"
+    FRF_SENTRY_DSN: "{{ public_sentry_dsn }}"
 
 - name: Fix permissions
   file:

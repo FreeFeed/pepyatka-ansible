@@ -53,7 +53,10 @@
       "database": "{{ postgres_dbname }}",
       "user": "{{ postgres_user }}",
       "password": "{{ postgres_pass }}"
-    }
+    },
+  },
+  "performance": {
+    "searchQueriesTimeout": 300000
   },
   "externalAuthProviders": {
     "google": {

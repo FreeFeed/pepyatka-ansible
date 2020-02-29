@@ -1,6 +1,5 @@
 [target]
 micropeppa.freefeed.net
-candy.freefeed.net
 
 [redis:children]
 target
@@ -11,8 +10,8 @@ target
 [pepyatka-frontend:children]
 target
 
-[staging:children]
+[unstable:children]
 target
 
-[staging_secrets:children]
+[unstable_secrets:children]
 target

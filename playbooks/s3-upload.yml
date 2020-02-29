@@ -1,0 +1,11 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Sync with S3
+      s3_sync:
+        bucket: freefeed-config
+        file_root: freefeed-config/
+        region: eu-west-1

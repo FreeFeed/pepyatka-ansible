@@ -1,0 +1,70 @@
+{
+  "secret": "{{ freefeed_secret }}",
+  "origin": "*",
+  "serviceName": "FreeFeed",
+  "monitorPrefix": "{{ monitor_prefix }}",
+  "recaptcha": {
+    "enabled": true,
+    "secret": "{{ recaptcha_server_secret }}"
+  },
+  "application": {
+    "extraStopListPath": "/etc/freefeed/banlist.txt"
+  },
+  "sentryDsn": "{{ sentry_dsn }}",
+  "host": "https://{{ react_client_hostname }}",
+  "media": {
+    "url": "https://{{ pepyatka_media_hostname }}/",
+    "storage": {
+      "type": "s3",
+      "rootDir": "/var/pepyatka-files/",
+      "accessKeyId": null,
+      "secretAccessKey": null,
+      "bucket": "{{ pepyatka_s3_bucket }}"
+    }
+  },
+  "attachments": {
+    "fileSizeLimit": 52428800
+  },
+  "profilePictures": {
+    "defaultProfilePictureMediumUrl": "https://media.freefeed.net/attachments/d067713e-0ba4-4d0a-ae1f-41b31780fda3.png"
+  },
+  "mailer": {
+    "useSMTPTransport": true,
+    "fromName": "FreeFeed.net",
+    "fromEmail": "freefeed.net@gmail.com",
+    "resetPasswordMailSubject": "FreeFeed password reset",
+    "options": {
+      "host": "{{ freefeed_mailer_smtp_host }}",
+      "port": {{ freefeed_mailer_smtp_port }},
+      "secure": false,
+      "auth": {
+        "user": "{{ freefeed_mailer_smtp_user }}",
+        "pass": "{{ freefeed_mailer_smtp_pass }}"
+      }
+    },
+    "adminRecipient": {
+      "email": "archives@freefeed.net",
+      "screenName": "Archive admins"
+    }
+  },
+  "postgres": {
+    "connection": {
+      "host": "{{ postgres_host }}",
+      "database": "{{ postgres_dbname }}",
+      "user": "{{ postgres_user }}",
+      "password": "{{ postgres_pass }}"
+    }
+  },
+  "externalAuthProviders": {
+    "google": {
+      "clientId": "{{ freefeed_external_auth_google_client_id }}",
+      "clientSecret": "{{ freefeed_external_auth_google_client_secret }}"
+    },
+    "facebook": {
+      "clientId": "{{ freefeed_external_auth_facebook_client_id }}",
+      "clientSecret": "{{ freefeed_external_auth_facebook_client_secret }}"
+    }
+  },
+  "app_name": "{{ new_relic_app_name }}",
+  "license_key": "{{ new_relic_license_key }}"
+}

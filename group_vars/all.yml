@@ -8,17 +8,16 @@ pepyatka_server_repo: https://github.com/freefeed/pepyatka-server.git
 react_client_repo: https://github.com/freefeed/freefeed-react-client.git
 vanilla_repo: https://github.com/freefeed/freefeed-lite.git
 
-pepyatka_mailer_smtp_enabled: True
-pepyatka_mailer_from_name: FreeFeed.net
-pepyatka_mailer_from_email: freefeed.net@gmail.com
-pepyatka_onboarding_username: welcome
-
 pepyatka_node_env: production
 pepyatka_server_host: localhost
-pepyatka_file_size_limit: 52428800
 
 auth_cookie_domain: freefeed.net
 local_storage_whoami_cache_key: whoamiCache
 
 nginx_client_max_body_size: '50M'
 
+pepyatka_frontend_scheme: https
+pepyatka_storage_type: s3
+
+recaptcha_enabled: true
+recaptcha_client_secret: '6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5'

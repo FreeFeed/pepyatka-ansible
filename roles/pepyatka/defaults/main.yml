@@ -8,37 +8,12 @@ pepyatka_server_branch: stable
 pepyatka_base_port: 3000
 pepyatka_hostname: "{{ inventory_hostname }}"
 pepyatka_media_hostname: "{{ inventory_hostname }}"
-pepyatka_origin: '*'
 pepyatka_home_dir: /opt/pepyatka
 pepyatka_storage_type: fs
 pepyatka_files_dir: /var/pepyatka-files
-pepyatka_aws_access_key: "null" # Use "'value'" for non-nulls
-pepyatka_aws_secret_key: "null" # Use "'value'" for non-nulls
 pepyatka_s3_bucket: ""
-pepyatka_file_size_limit: '10mb'
 pepyatka_node_env: production
-pepyatka_secret: 'secret'
-pepyatka_redis_host: 'localhost'
-pepyatka_redis_port: 6379
 pepyatka_frontend_scheme: http
-pepyatka_mailer_smtp_enabled: False
-pepyatka_mailer_smtp_secure: 'false'
-pepyatka_mailer_smtp_host: localhost
-pepyatka_mailer_smtp_port: 25
-pepyatka_mailer_smtp_user: 'username'
-pepyatka_mailer_smtp_pass: 'password'
-pepyatka_mailer_from_name: 'Pepyatka'
-pepyatka_mailer_from_email: 'mail@pepyatka.com'
-pepyatka_accept_hashed_passwords_only: 'false'
 pepyatka_banlist: ""
-pepyatka_statsd_prefix: "pepyatka"
-recaptcha_enabled: false
-recaptcha_server_secret: ""
-postgres_host: localhost
-postgres_port: 5432
-postgres_dbname: freefeed
-postgres_user: freefeed
-postgres_pass: freefeed
-sentry_dsn: ""
 freefeed_cron_log_dir: "/var/log/freefeed-cron"
 freefeed_external_auth_providers_enabled: false

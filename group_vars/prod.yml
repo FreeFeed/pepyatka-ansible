@@ -2,14 +2,9 @@
 
 pepyatka_hostname: freefeed.net
 pepyatka_media_hostname: media.freefeed.net
-pepyatka_frontend_scheme: https
-pepyatka_statsd_prefix: freefeed
 pepyatka_server_branch: release
 pepyatka_ansible_branch: freefeed
-pepyatka_redis_host: localhost
-pepyatka_storage_type: s3
 pepyatka_s3_bucket: freefeed-media
-pepyatka_accept_hashed_passwords_only: 'false'
 pepyatka_ga_account: 'UA-62517081-1'
 pepyatka_deploy_inventory: prod
 
@@ -25,10 +20,9 @@ nginx_restrict_users_ip: 136.243.23.88
 nginx_load_balancer_source: '172.31.0.0/16'
 
 auth_token_prefix: freefeedBETA_
-recaptcha_enabled: true
-recaptcha_client_secret: '6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5'
 
 new_relic_app_name: "FreeFeed Production"
 public_sentry_dsn: 'https://abdac1f2db2d45efaa9142062fe14bd8@sentry.io/75960'
 freefeed_external_auth_providers_enabled: true
 reg_limit_form_iframe_src: 'https://docs.google.com/forms/d/e/1FAIpQLSeup04O9-SgnerDJoz0njIeD4gaiGf-Rt9oLUmib_RYErYjmQ/viewform?embedded=true'
+monitor_prefix: freefeed

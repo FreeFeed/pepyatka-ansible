@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  tasks:
+    - name: render local-{{ pepyatka_server_branch }}.json
+      local_action: template
+      args:
+        src: local.json.j2
+        dest: freefeed-config/server/local-{{ pepyatka_server_branch }}.json
+

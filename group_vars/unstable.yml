@@ -1,0 +1,25 @@
+---
+
+pepyatka_hostname: micropeppa.freefeed.net
+pepyatka_media_hostname: unstable-media.freefeed.net
+pepyatka_server_branch: unstable
+pepyatka_ansible_branch: development
+pepyatka_s3_bucket: freefeed-storage-test
+pepyatka_deploy_inventory: unstable
+
+react_client_branch: unstable
+react_client_hostname: george.freefeed.net
+
+vanilla_enabled: true
+vanilla_branch: development
+vanilla_hostname: nanopeppa.freefeed.net
+vanilla_lead_domain: micropeppa
+
+nginx_load_balancer_source: '172.31.0.0/16'
+
+auth_token_prefix: micropeppa_
+
+new_relic_app_name: "FreeFeed Unstable"
+public_sentry_dsn: 'https://c0d1b60991264cc4b56a1398db012900@sentry.io/79081'
+freefeed_external_auth_providers_enabled: true
+monitor_prefix: micropeppa

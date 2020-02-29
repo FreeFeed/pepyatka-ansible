@@ -1,13 +1,7 @@
 [target]
-localhost ansible_connection=local
-
-[aws:children]
-target
+candy.freefeed.net
 
 [redis:children]
-target
-
-[postgres:children]
 target
 
 [pepyatka:children]
@@ -16,3 +10,8 @@ target
 [pepyatka-frontend:children]
 target
 
+[stable:children]
+target
+
+[stable_secrets:children]
+target

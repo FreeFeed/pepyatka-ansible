@@ -17,3 +17,5 @@ pepyatka_frontend_scheme: http
 pepyatka_banlist: ""
 freefeed_cron_log_dir: "/var/log/freefeed-cron"
 freefeed_external_auth_providers_enabled: false
+freefeed_fetch_config_overrides_from_s3: false
+freefeed_s3_config_bucket: "freefeed-config"

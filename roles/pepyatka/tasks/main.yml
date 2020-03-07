@@ -57,6 +57,7 @@
   shell: "aws s3 cp s3://freefeed-config/server/local-{{ pepyatka_server_branch }}.json ./"
   args:
     chdir: "{{ pepyatka_home_dir }}/pepyatka-server/config"
+  when: freefeed_fetch_config_overrides_from_s3
   tags:
     - pepyatka
 
@@ -73,6 +74,7 @@
   shell: "aws s3 cp s3://freefeed-config/server/banlist.txt ./"
   args:
     chdir: /etc/freefeed
+  when: freefeed_fetch_config_overrides_from_s3
   tags:
     - pepyatka
 

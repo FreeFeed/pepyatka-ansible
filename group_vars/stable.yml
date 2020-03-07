@@ -20,3 +20,4 @@ public_sentry_dsn: 'https://c0d1b60991264cc4b56a1398db012900@sentry.io/79081'
 freefeed_external_auth_providers_enabled: true
 new_relic_app_name: "FreeFeed Stable"
 monitor_prefix: candy
+freefeed_fetch_config_overrides_from_s3: true

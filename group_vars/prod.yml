@@ -26,3 +26,4 @@ public_sentry_dsn: 'https://abdac1f2db2d45efaa9142062fe14bd8@sentry.io/75960'
 freefeed_external_auth_providers_enabled: true
 reg_limit_form_iframe_src: 'https://docs.google.com/forms/d/e/1FAIpQLSeup04O9-SgnerDJoz0njIeD4gaiGf-Rt9oLUmib_RYErYjmQ/viewform?embedded=true'
 monitor_prefix: freefeed
+freefeed_fetch_config_overrides_from_s3: true

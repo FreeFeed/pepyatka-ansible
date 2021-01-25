@@ -26,6 +26,10 @@ http {
 
     index   index.html index.htm;
 
+    geo $dollar {
+      default "$";
+    }
+
     upstream freefeed_server {
       ip_hash;
 {% for container in server_containers %}

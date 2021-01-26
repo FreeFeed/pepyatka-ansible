@@ -17,7 +17,11 @@ location = /favicon.ico {
 
 # Disable logging for robots.txt
 location = /robots.txt {
+{% if nginx_let_robots_index_root %}
   return 200 "User-agent: *\nAllow: /$dollar\nDisallow: /";
+{% else %}
+  return 200 "User-agent: *\nDisallow: /";
+{% endif %}
   log_not_found off;
   access_log off;
 }

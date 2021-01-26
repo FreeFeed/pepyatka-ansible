@@ -13,6 +13,7 @@ client_blue_port: 8080
 client_green_port: 8081
 vanilla_hostname: m.freefeed.net
 vanilla_lead_domain: FreeFeed
+nginx_let_robots_index_root: true
 
 auth_token_prefix: freefeedBETA_
 

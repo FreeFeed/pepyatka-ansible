@@ -1,0 +1,13 @@
+ssl_session_cache shared:le_nginx_SSL:1m;
+ssl_session_timeout 1440m;
+ssl_session_tickets off;
+ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers ECDHE:+AES256:-3DES:RSA+AES:!NULL:!RC4:!SSLv3;
+ssl_prefer_server_ciphers on;
+add_header Strict-Transport-Security "max-age=63072000" always;
+ssl_stapling on;
+ssl_stapling_verify on;
+ssl_certificate {{ nginx_ssl_cert }};
+ssl_certificate_key {{ nginx_ssl_key }};
+ssl_trusted_certificate {{ nginx_ssl_cert_chain }};
+resolver {{ nginx_ssl_resolver }};

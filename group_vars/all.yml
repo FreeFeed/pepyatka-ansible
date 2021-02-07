@@ -9,3 +9,8 @@ recaptcha_enabled: true
 recaptcha_client_secret: '6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5'
 
 google_analytics_id: 'UA-62517081-1'
+
+nginx_ssl_cert: /etc/letsencrypt/live/freefeed.net/fullchain.pem
+nginx_ssl_key: /etc/letsencrypt/live/freefeed.net/privkey.pem
+nginx_ssl_cert_chain: /etc/letsencrypt/live/freefeed.net/chain.pem
+nginx_ssl_resolver: '213.133.99.99 213.133.98.98 213.133.100.100'

@@ -1,0 +1,10 @@
+---
+
+freefeed_client_port: 8080
+
+react_client_image: "freefeed/freefeed-react-client:{{ react_client_version }}"
+freefeed_hostname: "{{ inventory_hostname }}"
+
+local_storage_whoami_cache_key: whoamiCache
+recaptcha_client_secret: ""
+

@@ -1,0 +1,40 @@
+---
+
+- name: Install nginx
+  become: yes
+  package:
+    name: nginx
+    state: present
+
+- name: Render ssl.conf
+  become: yes
+  template:
+    src: ssl.conf.j2
+    dest: /etc/nginx/ssl.conf
+  register: ssl_conf
+
+- name: Render nginx.conf
+  become: yes
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  register: nginx_conf
+
+- name: Ensure /etc/nginx/conf.d
+  become: yes
+  file:
+    path: /etc/nginx/conf.d
+    state: directory
+
+- name: Render /etc/nginx/conf.d/{{ freefeed_hostname }}.conf
+  become: yes
+  template:
+    src: site.conf.j2
+    dest: "/etc/nginx/conf.d/{{ freefeed_hostname }}.conf"
+  register: site_conf
+
+- name: Reload nginx
+  ansible.builtin.service:
+    name: nginx
+    state: reloaded
+  when: nginx_conf.changed or ssl_conf.chagned or site_conf.changed

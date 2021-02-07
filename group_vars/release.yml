@@ -1,18 +1,11 @@
 ---
 
-freefeed_hostname: freefeed.net
-freefeed_media_hostname: media.freefeed.net
 freefeed_env: release
+freefeed_media_hostname: media.freefeed.net
 freefeed_s3_bucket: freefeed-media
 freefeed_storage_type: s3
 freefeed_base_port: 3000
 freefeed_jobs_enabled: true
-react_client_enabled: true
-react_client_hostname: freefeed.net
-client_blue_port: 8080
-client_green_port: 8081
-vanilla_hostname: m.freefeed.net
-vanilla_lead_domain: FreeFeed
 nginx_let_robots_index_root: true
 
 auth_token_prefix: freefeedBETA_
@@ -29,9 +22,7 @@ public_sentry_dsn: 'https://abdac1f2db2d45efaa9142062fe14bd8@sentry.io/75960'
 monitor_prefix: freefeed
 freefeed_external_auth_providers_enabled: true
 reg_limit_form_iframe_src: 'https://docs.google.com/forms/d/e/1FAIpQLSeup04O9-SgnerDJoz0njIeD4gaiGf-Rt9oLUmib_RYErYjmQ/viewform?embedded=true'
-freefeed_fetch_config_overrides_from_s3: true
 redis_host: "redis-{{ freefeed_env }}"
 freefeed_server_instances: 6
-freefeed_frontend_scheme: http
 
 ansible_python_interpreter: /usr/bin/python3

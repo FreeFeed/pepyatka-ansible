@@ -1,0 +1,7 @@
+---
+
+vanilla_client_port: 8090
+
+vanilla_image: "freefeed/vanilla-{{ freefeed_env }}:latest"
+vanilla_hostname: "{{ inventory_hostname }}"
+

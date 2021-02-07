@@ -1,0 +1,3 @@
+---
+
+nginx_let_robots_index_root: false

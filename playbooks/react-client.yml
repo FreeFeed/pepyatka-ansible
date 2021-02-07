@@ -2,4 +2,3 @@
 - hosts: frontend
   roles:
     - react_client
-    - vanilla

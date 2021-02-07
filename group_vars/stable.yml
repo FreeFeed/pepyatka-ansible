@@ -1,20 +1,12 @@
 ---
 
-freefeed_hostname: candy.freefeed.net
+freefeed_env: stable
 freefeed_media_hostname: stable-media.freefeed.net
 freefeed_server_version: latest
-freefeed_env: stable
 freefeed_s3_bucket: freefeed-storage-test
 freefeed_storage_type: s3
 freefeed_base_port: 4000
 freefeed_jobs_enabled: false
-react_client_enabled: true
-react_client_version: latest
-react_client_hostname: candy.freefeed.net
-client_blue_port: 9080
-client_green_port: 9081
-vanilla_hostname: nanopeppa.freefeed.net
-vanilla_lead_domain: candy
 
 auth_token_prefix: micropeppa_
 
@@ -28,9 +20,7 @@ new_relic_app_name: "FreeFeed stable"
 public_sentry_dsn: 'https://c0d1b60991264cc4b56a1398db012900@sentry.io/79081'
 monitor_prefix: candy
 freefeed_external_auth_providers_enabled: true
-freefeed_fetch_config_overrides_from_s3: true
 redis_host: "redis-{{ freefeed_env }}"
 freefeed_server_instances: 1
-freefeed_frontend_scheme: http
 
 ansible_python_interpreter: /usr/bin/python3

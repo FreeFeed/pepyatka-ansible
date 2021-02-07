@@ -1,0 +1,20 @@
+[target]
+nanopeppa.freefeed.net ansible_host=freefeed.net
+
+[redis:children]
+target
+
+[server:children]
+target
+
+[frontend:children]
+target
+
+[nginx:children]
+target
+
+[stable:children]
+target
+
+[stable_secrets:children]
+target

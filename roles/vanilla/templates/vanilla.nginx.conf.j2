@@ -1,0 +1,69 @@
+worker_processes 1;
+
+error_log  /var/log/nginx/error.log;
+pid        /run/nginx.pid;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  include       /etc/nginx/mime.types;
+  default_type  application/octet-stream;
+  charset       utf-8;
+  client_max_body_size {{ nginx_client_max_body_size }};
+
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for" '
+                    '$request_time $upstream_response_time $pipe';
+
+  access_log  /var/log/nginx/access.log main;
+
+  sendfile on;
+  keepalive_timeout 65;
+  index index.html index.htm;
+
+  upstream freefeed_server {
+    ip_hash;
+{% for container in server_containers %}
+    server {{ container }}:3000;
+{% endfor %}
+  }
+
+  server {
+    listen 80;
+    server_name {{ freefeed_hostname }};
+
+    # Used for opengraph-data export
+    ssi on;
+
+    root /usr/share/nginx/vanilla;
+
+    location ~ ^/(v1/|v2/|socket.io/) {
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+      proxy_set_header Access-Control-Allow-Origin '*';
+      proxy_set_header Access-Control-Allow-Methods 'GET,PUT,POST,DELETE,OPTIONS';
+      proxy_set_header Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept, X-Authentication-Token, Access-Control-Request-Method';
+
+      proxy_pass http://freefeed_server;
+      proxy_redirect off;
+
+      proxy_connect_timeout 5s;
+      proxy_next_upstream_timeout 6s;
+    }
+
+    location / {
+      rewrite ^/s/(.*)$ /$1 break;
+      rewrite ^.* /index.htm break;
+    }
+  }
+}
+

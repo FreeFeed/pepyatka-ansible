@@ -1,0 +1,5 @@
+---
+
+freefeed_hostname: nanopeppa.freefeed.net
+freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
+freefeed_client_port: 9090

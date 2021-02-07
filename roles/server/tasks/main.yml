@@ -19,6 +19,7 @@
     restart_policy: on-failure
     networks:
       - name: freefeed
+    purge_networks: yes
 
 - name: Run DB migrations
   become: yes
@@ -35,6 +36,7 @@
       NODE_CONFIG_ENV: "{{ freefeed_env }}"
     networks:
       - name: freefeed
+    purge_networks: yes
     state: started
 
 - name: Ensure directory for logs
@@ -69,6 +71,7 @@
       #DEBUG: '*,-babel*'
     networks:
       - name: freefeed
+    purge_networks: yes
     healthcheck:
       test: ["CMD", "curl", "-s", "--fail", "http://localhost:3000/v2/server-info"]
       interval: 30s

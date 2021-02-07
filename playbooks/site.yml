@@ -1,0 +1,3 @@
+- include: server.yml
+- include: frontend.yml
+- include: nginx.yml

@@ -1,0 +1,55 @@
+---
+
+- name: Ensure /etc/freefeed/{{ freefeed_site }}
+  become: yes
+  file:
+    path: "/etc/freefeed/{{ freefeed_site }}"
+    state: directory
+
+- set_fact:
+    server_containers: []
+
+- set_fact:
+    server_containers: "{{ server_containers + ['freefeed-server-'+freefeed_env+'-'+item] }}"
+  with_sequence: count="{{ freefeed_server_instances }}"
+
+- name: Render /etc/freefeed/{{ freefeed_site }}/vanilla.nginx.conf
+  become: yes
+  template: src="vanilla.nginx.conf.j2" dest="/etc/freefeed/{{ freefeed_site }}/vanilla.nginx.conf"
+  register: nginx_conf
+
+- name: Create vanilla container
+  become: yes
+  docker_container:
+    name: "vanilla-{{ freefeed_site }}"
+    image: "{{ vanilla_image }}"
+    command: echo
+    state: present
+    pull: yes
+
+- name: Start nginx container
+  become: yes
+  docker_container:
+    name: "nginx-{{ freefeed_site }}"
+    image: nginx:latest
+    published_ports:
+      - "{{ freefeed_client_port }}:80"
+    volumes:
+      - "/etc/freefeed/{{ freefeed_site }}/vanilla.nginx.conf:/etc/nginx/nginx.conf:ro"
+    networks:
+      - name: freefeed
+    purge_networks: yes
+    networks_cli_compatible: no
+    state: started
+    restart_policy: on-failure
+
+- name: Copy vanilla files
+  become: yes
+  shell: "docker cp vanilla-{{ freefeed_site }}:/var/www/vanilla - | docker cp - nginx-{{ freefeed_site }}:/usr/share/nginx/"
+
+- name: Delete vanilla container
+  become: yes
+  docker_container:
+    name: "vanilla-{{ freefeed_site }}"
+    state: absent
+

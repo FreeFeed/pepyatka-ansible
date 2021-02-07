@@ -1,0 +1,6 @@
+---
+
+freefeed_hostname: m.freefeed.net
+freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
+freefeed_client_port: 8090
+vanilla_lead_domain: FreeFeed

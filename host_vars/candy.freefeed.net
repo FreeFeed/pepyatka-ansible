@@ -1,0 +1,8 @@
+---
+
+freefeed_hostname: candy.freefeed.net
+freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
+react_client_version: latest
+freefeed_client_port: 9080
+
+

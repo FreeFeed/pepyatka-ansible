@@ -1,5 +1,5 @@
 [target]
-freefeed.net
+m.freefeed.net ansible_host=freefeed.net
 
 [redis:children]
 target
@@ -8,6 +8,9 @@ target
 target
 
 [frontend:children]
+target
+
+[nginx:children]
 target
 
 [release:children]

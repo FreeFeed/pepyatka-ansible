@@ -37,4 +37,4 @@
   ansible.builtin.service:
     name: nginx
     state: reloaded
-  when: nginx_conf.changed or ssl_conf.chagned or site_conf.changed
+  when: nginx_conf.changed or ssl_conf.changed or site_conf.changed

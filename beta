@@ -1,0 +1,11 @@
+[target]
+beta.freefeed.net ansible_host=freefeed.net
+
+[frontend:children]
+target
+
+[release:children]
+target
+
+[release_secrets:children]
+target

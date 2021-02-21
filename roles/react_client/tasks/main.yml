@@ -19,11 +19,11 @@
     server_containers: "{{ server_containers + ['freefeed-server-'+freefeed_env+'-'+item] }}"
   with_sequence: count="{{ freefeed_server_instances }}"
 
-- name: Render nginx config
+- name: Render /etc/freefeed/{{ freefeed_site }}/react-client.nginx.conf
   become: yes
   template: src="react-client.nginx.conf.j2" dest="/etc/freefeed/{{ freefeed_site }}/react-client.nginx.conf"
 
-- name: Create freefeed-react-client container
+- name: Create react-client-{{ freefeed_site }} container
   become: yes
   docker_container:
     name: "react-client-{{ freefeed_site }}"
@@ -32,7 +32,7 @@
     state: present
     pull: yes
 
-- name: Start nginx container
+- name: Start nginx-{{ freefeed_site }} container
   become: yes
   docker_container:
     name: "nginx-{{ freefeed_site }}"

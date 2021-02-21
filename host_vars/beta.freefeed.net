@@ -1,0 +1,7 @@
+---
+
+freefeed_hostname: freefeed.net
+freefeed_site: "beta_{{ freefeed_hostname | replace('.', '_') }}"
+freefeed_client_port: 8081
+freefeed_client_beta_port: 8081
+react_client_version: beta

@@ -4,6 +4,9 @@ beta.freefeed.net ansible_host=freefeed.net
 [frontend:children]
 target
 
+[nginx:children]
+target
+
 [release:children]
 target
 

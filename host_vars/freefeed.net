@@ -1,8 +1,9 @@
 ---
 
+freefeed_site_title: FreeFeed
 freefeed_hostname: freefeed.net
 freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
 freefeed_client_port: 8080
 freefeed_client_beta_port: 8081
 beta_channel_enabled: true
-
+beta_channel_cookie_map: true

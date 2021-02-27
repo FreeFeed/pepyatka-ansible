@@ -9,7 +9,7 @@ upstream {{ freefeed_site }}_client {
   server localhost:{{ freefeed_client_port }};
 }
 
-{% if beta_channel_enabled %}
+{% if beta_channel_cookie_map %}
 upstream {{ freefeed_site }}_client_beta {
   server localhost:{{ freefeed_client_beta_port }};
 }
@@ -135,8 +135,8 @@ server {
 
       proxy_buffers 32 4k;
 
-{% if beta_channel_enabled %}
-      proxy_pass http://$client_upstream$uri;
+{% if beta_channel_cookie_map %}
+      proxy_pass http://$client_upstream$request_uri;
 {% else %}
       proxy_pass http://{{ freefeed_site }}_client;
 {% endif %}

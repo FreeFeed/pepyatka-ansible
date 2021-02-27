@@ -1,7 +1,13 @@
 ---
 
-freefeed_hostname: freefeed.net
-freefeed_site: "beta_{{ freefeed_hostname | replace('.', '_') }}"
+freefeed_site_title: 'FreeFeed'
+freefeed_hostname: beta.freefeed.net
+freefeed_api_root: freefeed.net
+freefeed_site_origin: beta.freefeed.net
+freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
 freefeed_client_port: 8081
 freefeed_client_beta_port: 8081
 react_client_version: beta
+beta_channel_enabled: true
+beta_channel_isbeta: true
+

@@ -1,8 +1,9 @@
 {
     "api": {
-        "root": "https://{{ freefeed_hostname }}"
+        "root": "https://{{ freefeed_api_root }}"
     },
-    "siteOrigin": "https://{{ freefeed_hostname }}",
+    "siteOrigin": "https://{{ freefeed_site_origin }}",
+    "siteTitle": "{{ freefeed_site_title }}",
     "auth": {
         "tokenPrefix": "{{ auth_token_prefix }}",
         "userStorageKey": "{{ local_storage_whoami_cache_key }}"
@@ -13,6 +14,14 @@
     "captcha": {
       "siteKey": "{{ recaptcha_client_secret }}"
     },
+{% if beta_channel_enabled is defined and beta_channel_enabled %}
+    "betaChannel": {
+{% if beta_channel_isbeta is defined and beta_channel_isbeta %}
+      "isBeta": true,
+{% endif %}
+      "enabled": true
+    },
+{% endif %}
     "analytics": {
       "google": "{{ google_analytics_id }}"
     }

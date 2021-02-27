@@ -4,5 +4,5 @@ freefeed_hostname: candy.freefeed.net
 freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
 react_client_version: stable
 freefeed_client_port: 9080
-
+freefeed_site_title: Candy
 

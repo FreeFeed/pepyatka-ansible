@@ -3,4 +3,4 @@
 nginx_let_robots_index_root: false
 freefeed_client_port: 8080
 freefeed_client_beta_port: 8080
-beta_channel_enabled: false
+beta_channel_cookie_map: false

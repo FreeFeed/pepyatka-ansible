@@ -2,21 +2,21 @@
 
 [ -f /etc/freefeed/env ] && source /etc/freefeed/env
 
-docker run -t \
-       -v /etc/freefeed/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro \
-       -v /etc/freefeed/banlist.txt:/etc/freefeed/banlist.txt:ro \
-       -e NODE_ENV=production \
-       -e NODE_CONFIG_ENV={{ freefeed_env }} \
-       --network freefeed \
-       freefeed/freefeed-server:{{ freefeed_server_version }} \
-       node_modules/.bin/babel-node --extensions ".js,.jsx,.ts" "bin/${1}"
+output=$(docker run -t \
+                -v /etc/freefeed/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro \
+                -v /etc/freefeed/banlist.txt:/etc/freefeed/banlist.txt:ro \
+                -e NODE_ENV=production \
+                -e NODE_CONFIG_ENV={{ freefeed_env }} \
+                --network freefeed \
+                freefeed/freefeed-server:{{ freefeed_server_version }} \
+                node_modules/.bin/babel-node --extensions ".js,.jsx,.ts" "bin/${1}")
 
 if [[ $? != 0 && -n ${SLACK_WEBHOOK_CRON_URL} ]]; then
     read -d '' payload << EOF
 {
         "username": "$(hostname)",
         "icon_emoji": ":fire:",
-        "text": "Cron job ${1} failed"
+        "text": "Cron job ${1} failed: ${output}"
 }
 EOF
     curl -X POST -H 'Content-type: application/json' --data "${payload}" ${SLACK_WEBHOOK_CRON_URL}

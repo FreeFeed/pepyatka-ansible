@@ -2,7 +2,7 @@
 
 freefeed_env: stable
 freefeed_media_hostname: stable-media.freefeed.net
-freefeed_server_version: latest
+freefeed_server_version: stable
 freefeed_s3_bucket: freefeed-storage-test
 freefeed_storage_type: s3
 freefeed_base_port: 4000

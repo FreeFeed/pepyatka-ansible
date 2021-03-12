@@ -23,7 +23,7 @@
     user: root
     job: /usr/local/bin/freefeed-job count-daily-stats.js
     minute: '5'
-    hour: '0'
+    hour: '5'
     state: present
 
 - name: Cron job for db maintenance

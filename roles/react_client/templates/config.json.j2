@@ -24,5 +24,11 @@
 {% endif %}
     "analytics": {
       "google": "{{ google_analytics_id }}"
-    }
+    },
+
+    appVersionCheck: {
+      url: 'https://{{ freefeed_site_origin }}/version.txt',
+      header: 'Last-Modified',
+      intervalSec: 300,
+    },
 }

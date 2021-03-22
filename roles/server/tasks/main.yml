@@ -9,6 +9,7 @@
   template:
     src: local.json.j2
     dest: "/etc/freefeed/local-{{ freefeed_env }}.json"
+  register: local_json
 
 - name: Start redis container
   become: yes
@@ -80,6 +81,7 @@
       start_period: 15s
     state: started
     restart_policy: on-failure
+    recreate: "{{ local_json.changed }}"
     pull: yes
   loop: "{{ range(freefeed_base_port, freefeed_base_port+freefeed_server_instances, 1) | list }}"
   loop_control:

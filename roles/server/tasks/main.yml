@@ -38,6 +38,7 @@
     networks:
       - name: freefeed
     purge_networks: yes
+    pull: yes
     state: started
 
 - name: Ensure directory for logs

@@ -26,3 +26,11 @@ redis_host: "redis-{{ freefeed_env }}"
 freefeed_server_instances: 6
 
 ansible_python_interpreter: /usr/bin/python3
+
+# Donations config
+donations_status_account: "fffundingstatus"
+donations_reports_account: "ffreports"
+donations_paypal_regular_button: "97PAKQ6S97XMW"
+donations_paypal_onetime_button: "HMVYD6GEWNWH8"
+donations_liberapay_project: "freefeed"
+donations_yasoberu_project: "freefeed"

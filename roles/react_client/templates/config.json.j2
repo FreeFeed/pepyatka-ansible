@@ -30,5 +30,16 @@
       "url": "/version.txt",
       "header": "Last-Modified",
       "intervalSec": 300
+    },
+
+    "donations": {
+      "statusAccount": "{{ donations_status_account|default("") }}",
+      "reportsAccount": "{{ donations_reports_account|default("") }}",
+      "paymentMethods": {
+        "payPalRegularButtonId": "{{ donations_paypal_regular_button|default("") }}",
+        "payPalOneTimeButtonId": "{{ donations_paypal_onetime_button|default("") }}",
+        "liberaPayProject": "{{ donations_liberapay_project|default("") }}",
+        "yasobeRuProject": "{{ donations_yasoberu_project|default("") }}"
+      }
     }
 }

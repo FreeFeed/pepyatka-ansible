@@ -1,0 +1,17 @@
+- name: Deploy freefeed-db-backup
+  become: yes
+  template:
+    src: freefeed-db-backup.j2
+    dest: /usr/local/bin/freefeed-db-backup
+    mode: 0755
+
+- name: Setup cron job
+  become: yes
+  cron:
+    name: "FreeFeed DB backup"
+    cron_file: freefeed-db-backup
+    job: /usr/local/bin/freefeed-db-backup
+    user: postgres
+    hour: '2'
+    minute: '0'
+    state: present

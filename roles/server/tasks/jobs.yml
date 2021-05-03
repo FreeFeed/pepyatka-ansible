@@ -21,7 +21,7 @@
     name: FreeFeed daily stats
     cron_file: freefeed-daily-stats
     user: root
-    job: /usr/local/bin/freefeed-job count-daily-stats.js
+    job: "/usr/local/bin/freefeed-job count-daily-stats.js {{ healthchecks_io['count-daily-stats.js'] }}"
     minute: '5'
     hour: '5'
     state: present
@@ -32,7 +32,7 @@
     name: FreeFeed DB maintenance
     cron_file: freefeed-db-maintenance
     user: root
-    job: /usr/local/bin/freefeed-job db_maintenance.js
+    job: "/usr/local/bin/freefeed-job db_maintenance.js {{ healthchecks_io['db_maintenance.js'] }}"
     minute: '15'
     hour: '0'
     state: present
@@ -43,7 +43,7 @@
     name: FreeFeed notification emails
     cron_file: freefeed-notification-emails
     user: root
-    job: /usr/local/bin/freefeed-job notification_emails.js
+    job: "/usr/local/bin/freefeed-job notification_emails.js {{ healthchecks_io['notification_emails.js'] }}"
     minute: '45'
     hour: '21'
     state: present
@@ -54,7 +54,7 @@
     name: FreeFeed bestof emails
     cron_file: freefeed-bestof-emails
     user: root
-    job: /usr/local/bin/freefeed-job bestof_emails.js
+    job: "/usr/local/bin/freefeed-job bestof_emails.js {{ healthchecks_io['bestof_emails.js'] }}"
     minute: '40'
     hour: '6'
     state: present

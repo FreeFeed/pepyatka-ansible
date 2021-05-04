@@ -10,6 +10,6 @@ output=$(docker run -t \
                 --network freefeed \
                 freefeed/freefeed-server:"${version}" \
                 node_modules/.bin/babel-node --extensions ".js,.jsx,.ts" "bin/${1}" 2>&1)
-
-[ -n ${2} ] && curl -m 10 --retry 5 --data-raw "${output}" "https://hc-ping.com/${2}"
+status=$?
+[ -n ${2} ] && curl -m 10 --retry 5 --data-raw "${output}" "https://hc-ping.com/${2}/$status"
 

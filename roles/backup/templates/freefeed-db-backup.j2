@@ -4,7 +4,6 @@ set -eE
 
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 LOGTAG="freefeed-db-backup"
-SLACK_URL='https://hooks.slack.com/services/{{ slack_token }}'
 DB_NAME="{{postgres_dbname | string}}"
 BACKUP_BUCKET="{{ backup_s3_bucket }}"
 TIMESTAMP="$(date --utc +%Y-%m-%d-%H%M%S)"
@@ -13,13 +12,11 @@ today="$(date +%a)"
 weekly='Sun'
 [ "${today}" = "${weekly}" ] && PREFIX="weekly" || PREFIX="daily"
 
-error_msg() {
-    curl -s -X POST -H 'Content-type: application/json' --data '{"text":"Database backup failed", "username": "Backup", "icon_emoji": ":boom:"}' ${SLACK_URL}
+failure() {
+    curl -m 10 --retry 5 https://hc-ping.com/{{ healthchecks_io['freefeed-db-backup'] }}/fail
 }
 
-trap error_msg ERR
-
-sleep $((RANDOM % 360 + 1))
+trap failure ERR
 
 SCRIPT_START=$(date +%s)
 logger -t "${LOGTAG}" "Starting"
@@ -31,7 +28,7 @@ pg_dump -Fc ${DB_NAME} > ${BACKUPFILE}
 logger -t "${LOGTAG}" "Uploading ${BACKUPFILE} to s3://${BACKUP_BUCKET}/db/${PREFIX}/"
 aws s3 cp "${BACKUPFILE}" "s3://${BACKUP_BUCKET}/db/${PREFIX}/"
 rm -f "${BACKUPFILE}"
-curl -s -X POST -H 'Content-type: application/json' --data '{"text":"Database backup completed successfully", "username": "Backup", "icon_emoji": ":thumbsup:"}' ${SLACK_URL}
+curl -m 10 --retry 5 https://hc-ping.com/{{ healthchecks_io['freefeed-db-backup'] }}
 SCRIPT_END=$(date +%s)
 logger -t "${LOGTAG}" "Completed in $((SCRIPT_END-SCRIPT_START)) seconds"
 exit 0

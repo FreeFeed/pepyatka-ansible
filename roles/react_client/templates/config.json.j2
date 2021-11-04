@@ -41,5 +41,17 @@
         "liberaPayProject": "{{ donations_liberapay_project|default("") }}",
         "yasobeRuProject": "{{ donations_yasoberu_project|default("") }}"
       }
+    },
+    "textFormatter": {
+      "foreignMentionServices": [
+        { "title": "Facebook", "linkTpl": "https://www.facebook.com/{}", "shortCodes": ["fb", "facebook"] },
+        { "title": "FreeFeed", "linkTpl": "https://freefeed.net/{}", "shortCodes": ["freefeed"] },
+        { "title": "GitHub", "linkTpl": "https://github.com/{}", "shortCodes": ["github"] },
+        { "title": "Instagram", "linkTpl": "https://www.instagram.com/{}/", "shortCodes": ["ig", "instagram"] },
+        { "title": "LiveJournal", "linkTpl": "https://users.livejournal.com/{}/", "shortCodes": ["lj", "livejournal"] },
+        { "title": "Mokum", "linkTpl": "https://mokum.place/{}", "shortCodes": ["mokum"] },
+        { "title": "Telegram", "linkTpl": "https://t.me/{}", "shortCodes": ["tg", "telegram"] },
+        { "title": "Twitter", "linkTpl": "https://twitter.com/{}", "shortCodes": ["twitter"] }
+      ]
     }
 }

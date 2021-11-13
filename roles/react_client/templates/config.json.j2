@@ -9,10 +9,10 @@
         "userStorageKey": "{{ local_storage_whoami_cache_key }}"
     },
     "sentry": {
-        "publicDSN": "{{ public_sentry_dsn }}"
+        "publicDSN": "{{ public_sentry_dsn | default("") }}"
     },
     "captcha": {
-      "siteKey": "{{ recaptcha_client_secret }}"
+      "siteKey": "{{ recaptcha_client_secret | default("") }}"
     },
 {% if beta_channel_enabled is defined and beta_channel_enabled %}
     "betaChannel": {
@@ -23,7 +23,7 @@
     },
 {% endif %}
     "analytics": {
-      "google": "{{ google_analytics_id }}"
+      "google": "{{ google_analytics_id | default("") }}"
     },
 
     "appVersionCheck": {

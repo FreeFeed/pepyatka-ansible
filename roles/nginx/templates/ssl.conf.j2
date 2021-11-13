@@ -10,4 +10,6 @@ ssl_stapling_verify on;
 ssl_certificate {{ nginx_ssl_cert }};
 ssl_certificate_key {{ nginx_ssl_key }};
 ssl_trusted_certificate {{ nginx_ssl_cert_chain }};
+{% if nginx_ssl_resolver is defined %}
 resolver {{ nginx_ssl_resolver }};
+{% endif %}

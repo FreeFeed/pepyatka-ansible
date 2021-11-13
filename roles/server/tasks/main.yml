@@ -4,12 +4,20 @@
     path: /etc/freefeed
     state: directory
 
+- name: Ensure /etc/freefeed/banlist.txt
+  become: yes
+  file:
+    path: /etc/freefeed/banlist.txt
+    state: present
+
 - name: Render local-{{ freefeed_env }}.json
   become: yes
   template:
     src: local.json.j2
     dest: "/etc/freefeed/local-{{ freefeed_env }}.json"
   register: local_json
+  tags:
+    - config
 
 - name: Start redis container
   become: yes
@@ -50,6 +58,8 @@
 - name: Logrotate config for server logs
   become: yes
   template: src=logrotate.j2 dest="/etc/logrotate.d/freefeed-server-{{ freefeed_env }}"
+  tags:
+    - config
 
 - name: Start server containers
   become: yes

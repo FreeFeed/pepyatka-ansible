@@ -12,6 +12,8 @@
     src: ssl.conf.j2
     dest: /etc/nginx/ssl.conf
   register: ssl_conf
+  tags:
+    - config
 
 - name: Render nginx.conf
   become: yes
@@ -19,12 +21,16 @@
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
   register: nginx_conf
+  tags:
+    - config
 
 - name: Ensure /etc/nginx/conf.d
   become: yes
   file:
     path: /etc/nginx/conf.d
     state: directory
+  tags:
+    - config
 
 - name: Render /etc/nginx/conf.d/{{ freefeed_hostname }}.conf
   become: yes
@@ -32,6 +38,8 @@
     src: site.conf.j2
     dest: "/etc/nginx/conf.d/{{ freefeed_hostname }}.conf"
   register: site_conf
+  tags:
+    - config
 
 - name: Reload nginx
   ansible.builtin.service:

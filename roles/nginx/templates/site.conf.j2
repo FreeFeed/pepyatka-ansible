@@ -78,24 +78,42 @@ server {
 
     # These rewrites are for old pre-S3 urls
     location /attachments/original/ {
+{% if freefeed_storage_type == 'fs' %}
+      root {{ freefeed_files_root_dir }};
+      expires max;
+      try_files $uri =404;
+{% else %}
       if ($request_method !~ ^(GET|HEAD)$ ) {
         return 405;
       }
       rewrite ^/attachments/original/(.*)$ https://{{ freefeed_media_hostname }}/attachments/$1 permanent;
+{% endif %}
     }
 
     location /attachments/(thumbnails|thumbnails2)/ {
+{% if freefeed_storage_type == 'fs' %}
+      root {{ freefeed_files_root_dir }};
+      expires max;
+      try_files $uri =404;
+{% else %}
       if ($request_method !~ ^(GET|HEAD)$ ) {
         return 405;
       }
       rewrite ^/attachments/(.*)$ https://{{ freefeed_media_hostname }}/attachments/$1 permanent;
+{% endif %}
     }
 
     location /profilepics/ {
+{% if freefeed_storage_type == 'fs' %}
+      root {{ freefeed_files_root_dir }};
+      expires max;
+      try_files $uri =404;
+{% else %}
       if ($request_method !~ ^(GET|HEAD)$ ) {
         return 405;
       }
       rewrite ^/profilepics/(.*)$ https://{{ freefeed_media_hostname }}/profilepics/$1 permanent;
+{% endif %}
     }
 
     location ~ ^/(v1/|v2/|socket.io/) {

@@ -5,23 +5,33 @@
   file:
     path: "/etc/freefeed/{{ freefeed_site }}"
     state: directory
+  tags:
+    - config
 
 - name: Render /etc/freefeed/{{ freefeed_site }}/config.json
   become: yes
   template:
     src: config.json.j2
     dest: "/etc/freefeed/{{ freefeed_site }}/config.json"
+  tags:
+    - config
 
 - set_fact:
     server_containers: []
+  tags:
+    - always
 
 - set_fact:
     server_containers: "{{ server_containers + ['freefeed-server-'+freefeed_env+'-'+item] }}"
   with_sequence: count="{{ freefeed_server_instances }}"
+  tags:
+    - always
 
 - name: Render /etc/freefeed/{{ freefeed_site }}/react-client.nginx.conf
   become: yes
   template: src="react-client.nginx.conf.j2" dest="/etc/freefeed/{{ freefeed_site }}/react-client.nginx.conf"
+  tags:
+    - config
 
 - name: Create react-client-{{ freefeed_site }} container
   become: yes

@@ -12,19 +12,29 @@ Here for the sake of simplicity we will cover only the first scenario.
 ### Get a server
 We recommend to use Debain 11, have at least 4GB of RAM and at least 2 CPU cores. Required disk size capacity will depend on how much data users will be generating and whether you will be storing attachments on disk or S3-compatible infrastructure, but allocating at least few 10s of GB for freefeed data is probably a good idea.
 
-Hosting providers which we can recommend:
-- digitalocean.com
-- hetzner.com
-- aws.amazon.com
+Some of hosting providers:
+- [Digital Ocean](https://digitalocean.com/)
+- [Hetzner](https://hetzner.com/)
+- [AWS](https://aws.amazon.com/)
 
 ### Get a domain name
 You also need to point A record of your domain to the server, examples on how to do it among some popular domain names providers:
-    - [Namecheap](https://www.namecheap.com/support/knowledgebase/article.aspx/434/2237/how-do-i-set-up-host-records-for-a-domain/)
-    - [Name.com](https://www.name.com/support/articles/115004893508-adding-an-a-record)
-    - [Gandi.net](https://docs.gandi.net/en/domain_names/common_operations/link_domain_to_website.html)
+- [Namecheap](https://www.namecheap.com/support/knowledgebase/article.aspx/434/2237/how-do-i-set-up-host-records-for-a-domain/)
+- [Name.com](https://www.name.com/support/articles/115004893508-adding-an-a-record)
+- [Gandi.net](https://docs.gandi.net/en/domain_names/common_operations/link_domain_to_website.html)
+
+### Set up an email service
+It's needed for user registration and notifications. You can use some of email delivery services such as [Mailgun](https://documentation.mailgun.com/en/latest/quickstart.html), or your own private email account.
+To install FreeFeed you will need to specify hostname, port and login credentials for SMTP server.
 
 ### Setup SSH access to your server
 [Tutorial](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys-on-debian-11) from DigitalOcean community.
+
+### Prepare your own fork of freefeed-ansible
+
+- Fork https://github.com/FreeFeed/freefeed-ansible on Github
+- Clone your fork locally
+- run `./init-fork.sh`
 
 ## Run some commands on the server
 We assume you managed to log in to your server and your user has sudo access.
@@ -43,5 +53,7 @@ We assume you managed to log in to your server and your user has sudo access.
 
     $ git clone https://github.com/FreeFeed/freefeed-ansible.git
     $ cd freefeed-ansible
-    $ ansible-playbook -i localhost, playbooks/docker.yml
+    $ sed -i '/vault_password_file/d' ansible.cfg
+    $ rm group_vars/*_secrets.yml
+    $ ansible-playbook -i localhost, connection=local playbooks/docker.yml
 

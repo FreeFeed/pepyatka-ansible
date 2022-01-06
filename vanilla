@@ -1,5 +1,5 @@
 [target]
-m.freefeed.net ansible_host=freefeed.net
+vanilla.freefeed.net ansible_host=freefeed.net
 
 [redis:children]
 target

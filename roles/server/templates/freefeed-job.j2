@@ -9,7 +9,7 @@ output=$(docker run -t \
                 -e NODE_CONFIG_ENV={{ freefeed_env }} \
                 --network freefeed \
                 freefeed/freefeed-server:"${version}" \
-                yarn "${1}" 2>&1)
+                yarn babel bin/${1} 2>&1)
 status=$?
 [ -n ${2} ] && curl -m 10 --retry 5 --data-raw "${output}" "https://hc-ping.com/${2}/$status"
 

@@ -71,7 +71,7 @@
       DATADOG_PORT: '8125'
       NODE_CONFIG_ENV: "{{ freefeed_env }}"
       FRFS_PORT: '3000'
-      #DEBUG: '*,-babel*'
+      DEBUG: 'freefeed:user-gone,freefeed:jobs:*'
     networks:
       - name: freefeed
     purge_networks: yes

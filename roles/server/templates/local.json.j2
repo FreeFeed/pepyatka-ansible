@@ -92,6 +92,9 @@
     "token": "{{ loggly_token }}",
     "tags": ["{{ freefeed_site }}"]
   },
+  "registrationsLimit": {
+    "maxCount": {{ freefeed_daily_registrations_limit | default(100) }}
+  },
   "app_name": "{{ new_relic_app_name }}",
   "license_key": "{{ new_relic_license_key }}"
 }

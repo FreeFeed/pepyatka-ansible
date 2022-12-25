@@ -5,6 +5,7 @@ version=$(</etc/freefeed/{{ freefeed_env }}/server_version)
 output=$(docker run -t \
                 -v /etc/freefeed/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro \
                 -v /etc/freefeed/banlist.txt:/etc/freefeed/banlist.txt:ro \
+                -v /etc/freefeed/mailchecker.txt:/etc/freefeed/mailchecker.txt:ro \
                 -e NODE_ENV=production \
                 -e NODE_CONFIG_ENV={{ freefeed_env }} \
                 --network freefeed \

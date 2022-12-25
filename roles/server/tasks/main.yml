@@ -4,6 +4,11 @@
     path: /etc/freefeed
     state: directory
 
+- name: Download mailchecker-list
+  ansible.builtin.get_url:
+    url: https://github.com/FGRibreau/mailchecker/raw/master/list.txt
+    dest: /etc/freefeed/mailchecker.txt
+
 - name: Render local-{{ freefeed_env }}.json
   become: yes
   template:

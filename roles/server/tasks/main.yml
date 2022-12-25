@@ -69,6 +69,7 @@
     volumes:
       - "/etc/freefeed/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro"
       - /etc/freefeed/banlist.txt:/etc/freefeed/banlist.txt:ro
+      - /etc/freefeed/mailchecker.txt:/etc/freefeed/mailchecker.txt:ro
       - "{{ freefeed_log_dir }}:/server/log"
     env:
       NODE_ENV: production

@@ -6,3 +6,11 @@ react_client_version: stable
 freefeed_client_port: 9080
 freefeed_site_title: 'FreeFeed 🍭'
 freefeed_daily_registrations_limit: 0
+
+freefeed_inv_required_for_signup: true
+freefeed_inv_create_conditions:
+  - [ "minAccountAge", { age: "P15D" } ]
+  - [ "maxInvitesCreated", { count: 3, interval: "P1D" } ]
+  - [ "maxInvitesCreated", { count: 60, interval: "P30D" } ]
+  - [ "minPostsCreated", { count: 5 } ]
+  - [ "minCommentsFromOthers", { count: 5 } ]

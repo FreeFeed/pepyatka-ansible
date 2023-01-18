@@ -100,5 +100,9 @@
   "emailVerification": {
     "enabled": true,
     "domainBlockList": "/etc/freefeed/mailchecker.txt"
+  },
+  "invitations": {
+    "requiredForSignUp": {{ freefeed_inv_required_for_signup | default(false) | tojson }},
+    "canCreateIf": {{ freefeed_inv_create_conditions | default([]) | tojson }}
   }
 }

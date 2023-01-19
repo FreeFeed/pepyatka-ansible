@@ -55,5 +55,8 @@
         { "title": "Telegram", "linkTpl": "https://t.me/{}", "shortCodes": ["tg", "telegram"] },
         { "title": "Twitter", "linkTpl": "https://twitter.com/{}", "shortCodes": ["twitter"] }
       ]
+    },
+    "registrationsByInvite": {
+        "formIframeSrc": {{ invite_registrations_form_iframe_src|default(null)|tojson }}
     }
 }

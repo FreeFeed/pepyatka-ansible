@@ -27,7 +27,7 @@ freefeed_server_instances: 6
 
 ansible_python_interpreter: /usr/bin/python3
 
-invite_registrations_form_iframe_src: null
+invite_registrations_form_iframe_src: "https://docs.google.com/forms/d/e/1FAIpQLSdBzsUIHzR57Ylt2AfUfbIf9Bc03I8Oq2SdQmYqp0s-OsWmnw/viewform"
 
 # Donations config
 donations_status_account: "fffundingstatus"

@@ -9,7 +9,7 @@ beta_channel_enabled: true
 beta_channel_cookie_map: true
 freefeed_daily_registrations_limit: 15
 
-freefeed_inv_required_for_signup: false
+freefeed_inv_required_for_signup: true
 freefeed_inv_create_conditions:
   - [ "minAccountAge", { age: "P15D" } ]
   - [ "maxInvitesCreated", { count: 3, interval: "P1D" } ]

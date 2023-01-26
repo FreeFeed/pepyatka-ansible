@@ -104,5 +104,8 @@
   "invitations": {
     "requiredForSignUp": {{ freefeed_inv_required_for_signup | default(false) | tojson }},
     "canCreateIf": {{ freefeed_inv_create_conditions | default([]) | tojson }}
+  },
+  "rateLimit": {
+    "enabled": {{ freefeed_ratelimit_enabled | default(false) | tojson }}
   }
 }

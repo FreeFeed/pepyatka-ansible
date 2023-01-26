@@ -13,3 +13,5 @@ freefeed_inv_create_conditions:
   - [ "maxInvitesCreated", { count: 60, interval: "P30D" } ]
   - [ "minPostsCreated", { count: 5 } ]
   - [ "minCommentsFromOthers", { count: 5 } ]
+
+freefeed_ratelimit_enabled: true

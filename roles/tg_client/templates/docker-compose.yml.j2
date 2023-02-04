@@ -4,7 +4,7 @@ services:
   freefeed-tg-client:
     image: ghcr.io/freefeed/freefeed-tg-client:{{ freefeed_tg_client_version }}
     environment:
-      TOKEN: {{ freefeed_tg_client_token }}
+      TOKEN: "{{ freefeed_tg_client_token }}"
     volumes:
       - type: bind
         source: data

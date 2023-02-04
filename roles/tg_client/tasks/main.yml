@@ -1,0 +1,34 @@
+- name: Ensure user
+  become: yes
+  ansible.builtin.user:
+    name: tg-client
+    system: true
+    home: "{{ freefeed_tg_client_home }}"
+    create_home: true
+    append: true
+    groups:
+      - docker
+
+- name: Ensure data dir
+  become: yes
+  ansible.builtin.file:
+    path: "{{ freefeed_tg_client_home }}/data"
+    state: directory
+    owner: tg-client
+    group: tg-client
+    mode: '0755'
+
+- name: Render docker-compose.yml
+  become: yes
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ freefeed_tg_client_home }}/docker-compose.yml"
+    owner: tg-client
+    group: tg-client
+
+- name: Start freefeed-tg-client
+  become: yes
+  become_user: tg-client
+  shell:
+    cmd: "docker compose up -d"
+    chdir: "{{ freefeed_tg_client_home }}"

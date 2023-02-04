@@ -13,6 +13,9 @@ target
 [nginx:children]
 target
 
+[tg_client:children]
+target
+
 [release:children]
 target
 

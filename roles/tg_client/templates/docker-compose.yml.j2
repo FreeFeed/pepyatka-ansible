@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  freefeed-tg-client:
+    image: ghcr.io/freefeed/freefeed-tg-client:{{ freefeed_tg_client_version }}
+    environment:
+      TOKEN: {{ freefeed_tg_client_token }}
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s

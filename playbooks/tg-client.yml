@@ -1,0 +1,4 @@
+---
+- hosts: tg_client
+  roles:
+    - tg_client

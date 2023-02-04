@@ -1,0 +1,17 @@
+[Unit]
+Description=FreeFeed Telegram Client
+Requires=docker.service
+After=docker.service
+StartLimitIntervalSec=60
+
+[Service]
+WorkingDirectory={{ freefeed_tg_client_home }}
+User=tg-client
+ExecStart=/usr/bin/docker compose up
+ExecStop=/usr/bin/docker compose down
+TimeoutStartSec=0
+Restart=on-failure
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

@@ -5,6 +5,10 @@ services:
     image: ghcr.io/freefeed/freefeed-tg-client:{{ freefeed_tg_client_version }}
     environment:
       TOKEN: {{ freefeed_tg_client_token }}
+    volumes:
+      - type: bind
+        source: data
+        target: /bot/data
     deploy:
       restart_policy:
         condition: on-failure

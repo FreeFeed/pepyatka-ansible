@@ -5,7 +5,7 @@
     dest: /usr/local/bin/freefeed-db-backup
     mode: 0755
 
-- name: Setup cron job
+- name: Setup cron job for daily database backups
   become: yes
   cron:
     name: "FreeFeed DB backup"
@@ -13,5 +13,23 @@
     job: /usr/local/bin/freefeed-db-backup
     user: postgres
     hour: '2'
+    minute: '0'
+    state: present
+
+- name: Deploy freefeed-tg-client-backup
+  become: yes
+  template:
+    src: freefeed-tg-client-backup.j2
+    dest: /usr/local/bin/freefeed-tg-client-backup
+    mode: 0755
+
+- name: Setup cron job for Telegram Client data backup
+  become: yes
+  cron:
+    name: "FreeFeed Telegram Client data backup"
+    cron_file: freefeed-tg-client-backup
+    job: /usr/local/bin/freefeed-tg-client-backup
+    user: root
+    hour: '3'
     minute: '0'
     state: present

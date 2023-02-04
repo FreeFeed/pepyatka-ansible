@@ -41,3 +41,13 @@
     enabled: true
     daemon_reload: true
     name: tg-client.service
+
+- name: tg-client monitoring cron job
+  become: yes
+  ansible.builtin.cron:
+    name: freefeed-tg-client monitoring
+    cron_file: freefeed-tg-client
+    user: root
+    job: "test $(/usr/bin/systemctl show --property=ActiveState tg-client.service) = 'ActiveState=active' && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/{{ healthchecks_io['tg-client'] }}"
+    minute: '*'
+    state: present

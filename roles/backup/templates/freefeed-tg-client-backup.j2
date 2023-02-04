@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -eE
+
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+LOGTAG="freefeed-tg-client-backup"
+BACKUP_BUCKET="{{ backup_s3_bucket }}"
+TIMESTAMP="$(date --utc +%Y-%m-%d-%H%M%S)"
+BACKUPFILE="tg-client-${TIMESTAMP}.tar.gz"
+
+failure() {
+    curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/{{ healthchecks_io['tg-client-backup'] }}/fail
+}
+
+trap failure ERR
+
+SCRIPT_START=$(date +%s)
+logger -t "${LOGTAG}" "Starting"
+cd /var/lib/freefeed-tg-client
+logger -t "${LOGTAG}" "Removing old backup files, if any"
+rm -f *.tar.gz
+logger -t "${LOGTAG}" "Stopping freefeed-tg-client service"
+systemctl stop tg-client.service
+logger -t "${LOGTAG}" "Compressing data"
+tar -czf "${BACKUPFILE}" data
+logger -t "${LOGTAG}" "Starting freefeed-tg-client service"
+systemctl start tg-client.service
+logger -t "${LOGTAG}" "Uploading ${BACKUPFILE} to s3://${BACKUP_BUCKET}/tg-client"
+aws s3 cp "${BACKUPFILE}" "s3://${BACKUP_BUCKET}/tg-client/"
+rm -f "${BACKUPFILE}"
+curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/{{ healthchecks_io['tg-client-backup'] }}
+SCRIPT_END=$(date +%s)
+logger -t "${LOGTAG}" "Completed in $((SCRIPT_END-SCRIPT_START)) seconds"
+exit 0

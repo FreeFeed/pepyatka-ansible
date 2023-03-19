@@ -2,7 +2,7 @@
 
 freefeed_client_port: 8080
 
-react_client_image: "freefeed/freefeed-react-client:{{ react_client_version }}"
+react_client_image: "ghcr.io/freefeed/freefeed-react-client:{{ react_client_version }}"
 freefeed_hostname: "{{ inventory_hostname }}"
 freefeed_api_root: "{{ freefeed_hostname }}"
 freefeed_site_origin: "{{ freefeed_hostname }}"

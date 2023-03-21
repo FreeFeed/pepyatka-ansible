@@ -31,7 +31,7 @@
   become: yes
   docker_container:
     name: "freefeed-db-migration-{{ freefeed_env }}"
-    image: "freefeed/freefeed-server:{{ freefeed_server_version }}"
+    image: "ghcr.io/freefeed/freefeed-server:{{ freefeed_server_version }}"
     command: "./node_modules/.bin/knex migrate:latest"
     detach: false
     volumes:
@@ -61,7 +61,7 @@
   become: yes
   docker_container:
     name: "freefeed-server-{{ freefeed_env }}-{{ ansible_loop.index }}"
-    image: "freefeed/freefeed-server:{{ freefeed_server_version }}"
+    image: "ghcr.io/freefeed/freefeed-server:{{ freefeed_server_version }}"
     command: "yarn start"
     init: yes
     published_ports:

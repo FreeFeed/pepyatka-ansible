@@ -1,7 +1,7 @@
-- name: Ensure /etc/freefeed
+- name: Ensure "{{ freefeed_config_dir }}"
   become: yes
   file:
-    path: /etc/freefeed
+    path: "{{ freefeed_config_dir }}"
     state: directory
 
 - name: Download mailchecker-list
@@ -13,8 +13,10 @@
   become: yes
   template:
     src: local.json.j2
-    dest: "/etc/freefeed/local-{{ freefeed_env }}.json"
+    dest: "{{ freefeed_config_dir }}/local-{{ freefeed_env }}.json"
   register: local_json
+  tags:
+    - local-json
 
 - name: Start redis container
   become: yes

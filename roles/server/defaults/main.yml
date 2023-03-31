@@ -2,3 +2,4 @@
 
 freefeed_server_instances: "{{ ansible_processor_vcpus }}"
 freefeed_log_dir: "/var/log/freefeed-server/{{ freefeed_env }}"
+freefeed_config_dir: "/etc/freefeed"

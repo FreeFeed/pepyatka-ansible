@@ -5,9 +5,10 @@
     state: directory
 
 - name: Download mailchecker-list
+  become: yes
   ansible.builtin.get_url:
     url: https://github.com/FGRibreau/mailchecker/raw/master/list.txt
-    dest: /etc/freefeed/mailchecker.txt
+    dest: "{{ freefeed_config_dir }}/mailchecker.txt"
 
 - name: Render local-{{ freefeed_env }}.json
   become: yes
@@ -37,9 +38,9 @@
     command: "./node_modules/.bin/knex migrate:latest"
     detach: false
     volumes:
-      - "/etc/freefeed/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro"
-      - /etc/freefeed/banlist.txt:/etc/freefeed/banlist.txt:ro
-      - /etc/freefeed/mailchecker.txt:/etc/freefeed/mailchecker.txt:ro
+      - "{{ freefeed_config_dir }}/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro"
+      - "{{ freefeed_config_dir }}/banlist.txt:/etc/freefeed/banlist.txt:ro"
+      - "{{ freefeed_config_dir }}/mailchecker.txt:/etc/freefeed/mailchecker.txt:ro"
     env:
       NODE_ENV: production
       NODE_CONFIG_ENV: "{{ freefeed_env }}"
@@ -69,9 +70,9 @@
     published_ports:
       - "{{ item }}:3000"
     volumes:
-      - "/etc/freefeed/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro"
-      - /etc/freefeed/banlist.txt:/etc/freefeed/banlist.txt:ro
-      - /etc/freefeed/mailchecker.txt:/etc/freefeed/mailchecker.txt:ro
+      - "{{ freefeed_config_dir }}/local-{{ freefeed_env }}.json:/server/config/local-{{ freefeed_env }}.json:ro"
+      - "{{ freefeed_config_dir }}/banlist.txt:/etc/freefeed/banlist.txt:ro"
+      - "{{ freefeed_config_dir }}/mailchecker.txt:/etc/freefeed/mailchecker.txt:ro"
       - "{{ freefeed_log_dir }}:/server/log"
     env:
       NODE_ENV: production

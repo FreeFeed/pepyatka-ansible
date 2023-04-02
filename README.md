@@ -20,7 +20,7 @@ release/production:
 Secrets are managed via `ansible-vault`. Our secrets file `group_vars/release_secrets.yml` looks like this:
 
 ```
-freefeed_mailer_smtp_host: host.com
+freefeed_mailer_smtp_host: smtp.host.com
 freefeed_mailer_smtp_port: 587
 freefeed_mailer_smtp_user: user@host.com
 freefeed_mailer_smtp_pass: password
@@ -40,8 +40,19 @@ freefeed_external_auth_google_client_secret: secret
 freefeed_external_auth_facebook_client_id: clientid
 freefeed_external_auth_facebook_client_secret: secret
 
-company_title: 'Company Ltd.'
-company_address: 'Red Square 1, Moscow, Russia'
+company_title: 'FreeFeed MTÜ'
+company_address: 'Muti 30-25, 13424 Tallinn, Estonia'
+
+healthchecks_io:
+  'count-daily-stats': 'deadbeef'
+  'db_maintenance': 'deadbeef'
+  'notification_emails': 'deadbeef'
+  'bestof_emails': 'deadbeef'
+  'freefeed-db-backup': 'deadbeef'
+  'tg-client-backup': 'deadbeef'
+  'tg-client': 'deadbeef'
+
+loggly_token: '12345678-1234-1234-1234-123456789012'
 ```
 
 Vault uses password stored in a file configured in `ansible.cfg` via `vault_password_file` variable. Password is stored in clear text.
@@ -51,3 +62,14 @@ To create another file with secrets create a `.yml` file similar to ours, encryp
 To edit existing file with secrets use `ansible-vault edit <file>` command, and to simply view the decrypted content use `ansible-vault view <file>`.
 
 For more information: `ansible-vault --help`.
+
+## Local test
+
+If you want to test changes in config templates locally, run this command:
+
+```
+ansible-playbook -i local playbooks/server.yml --diff --check --tags local-json --connection local -e freefeed_config_dir=/tmp/ -K
+```
+
+It will ask for sudo password, but it will not be used.
+However, without `--check` flag it will actually create files in `/tmp` directory.

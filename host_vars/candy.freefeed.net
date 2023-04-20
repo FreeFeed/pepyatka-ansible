@@ -1,5 +1,4 @@
 ---
-
 freefeed_hostname: candy.freefeed.net
 freefeed_site: "{{ freefeed_hostname | replace('.', '_') }}"
 react_client_version: stable
@@ -8,10 +7,13 @@ freefeed_site_title: 'FreeFeed 🍭'
 
 freefeed_inv_required_for_signup: true
 freefeed_inv_create_conditions:
-  - [ "minAccountAge", { age: "P15D" } ]
-  - [ "maxInvitesCreated", { count: 3, interval: "P1D" } ]
-  - [ "maxInvitesCreated", { count: 60, interval: "P30D" } ]
-  - [ "minPostsCreated", { count: 5 } ]
-  - [ "minCommentsFromOthers", { count: 5 } ]
+  - ['minAccountAge', { age: 'P15D' }]
+  - ['maxInvitesCreated', { count: 3, interval: 'P1D' }]
+  - ['maxInvitesCreated', { count: 60, interval: 'P30D' }]
+  - ['minPostsCreated', { count: 5 }]
+  - ['minCommentsFromOthers', { count: 5 }]
 
 freefeed_ratelimit_enabled: true
+freefeed_ratelimit_anonymous_config: { duration: 'PT1M', maxRequests: { all: 20, GET: 100 } }
+freefeed_ratelimit_authenticated_config: { duration: 'PT1M', maxRequests: { all: 40, GET: 300, POST: 60 } }
+freefeed_ratelimit_repeat_block_multiplier: 1.5

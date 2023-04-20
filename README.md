@@ -1,9 +1,10 @@
 # Deploying FreeFeed
 
 Requirements:
-* ansible
-* debian
-* docker
+
+- ansible
+- debian
+- docker
 
 stable/candy:
 
@@ -65,11 +66,11 @@ For more information: `ansible-vault --help`.
 
 ## Local test
 
-If you want to test changes in config templates locally, run this command:
+If you want to test changes in config templates locally,
 
-```
-ansible-playbook -i local playbooks/server.yml --diff --check --tags local-json --connection local -e freefeed_config_dir=/tmp/ -K
-```
-
-It will ask for sudo password, but it will not be used.
-However, without `--check` flag it will actually create files in `/tmp` directory.
+1. install ansible
+1. `cp freefeed local`, replace `freefeed.net` with `localhost` and `release_secrets` with `local_secrets`
+1. `cp host_vars/freefeed.net host_vars/localhost`
+1. create a vault password file with a password (e.g. `echo 123 >> local.vault`), edit `vault_password_file` in `ansible.cfg` to point to it
+1. create a `group_vars/local_secrets` file with fake secrets (see contents above), encrypt it with `ansible-vault encrypt`
+1. `ansible-playbook -i local playbooks/server.yml --diff --tags local-json --connection local -e freefeed_config_dir=$OUTPUT_DIR -K` (you might need to run it with sudo first)

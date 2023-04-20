@@ -107,6 +107,13 @@
     "canCreateIf": {{ freefeed_inv_create_conditions | default([]) | tojson }}
   },
   "rateLimit": {
-    "enabled": {{ freefeed_ratelimit_enabled | default(false) | tojson }}
+    "enabled": {{ freefeed_ratelimit_enabled | default(false) | tojson }},
+    "allowlist": {{ freefeed_ratelimit_allowlist | default(['::ffff:127.0.0.1']) | tojson }},
+    "anonymous": {{ freefeed_ratelimit_anonymous_config | default({"duration":"PT1M","maxRequests":{"all":10,"GET":100}}) | tojson }},
+    "authenticated": {{ freefeed_ratelimit_authenticated_config | default({"duration":"PT1M","maxRequests":{"all":30,"GET":200,"POST":60}}) | tojson }},
+    "maskingKeyRotationInterval": {{ freefeed_ratelimit_masking_key_rotation_interval | default("P7D") | tojson }},
+    "blockDuration": {{ freefeed_ratelimit_block_duration | default("PT1M") | tojson }},
+    "repeatBlockCounterDuration": {{ freefeed_ratelimit_repeat_block_counter_duration | default("PT10M") | tojson }},
+    "repeatBlockMultiplier": {{ freefeed_ratelimit_repeat_block_multiplier | default(2) }}
   }
 }

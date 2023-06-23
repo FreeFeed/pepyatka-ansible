@@ -35,14 +35,14 @@
     "newUsersProtected": true,
 
     "donations": {
-      "statusAccount": {{ donations_status_account|default(null)|tojson }},
-      "reportsAccount": {{ donations_reports_account|default(null)|tojson }},
+      "statusAccount": "{{ donations_status_account|default("") }}",
+      "reportsAccount": "{{ donations_reports_account|default("") }}",
       "paymentMethods": {
-        "payPalRegularButtonId": {{ donations_paypal_regular_button|default(null)|tojson }},
-        "payPalOneTimeButtonId": {{ donations_paypal_onetime_button|default(null)|tojson }},
-        "liberaPayProject": {{ donations_liberapay_project|default(null)|tojson }},
-        "yasobeRuProject": {{ donations_yasoberu_project|default(null)|tojson }},
-        "boostyProject": {{ donations_boosty_project|default(null)|tojson }}
+        "payPalRegularButtonId": "{{ donations_paypal_regular_button|default("") }}",
+        "payPalOneTimeButtonId": "{{ donations_paypal_onetime_button|default("") }}",
+        "liberaPayProject": "{{ donations_liberapay_project|default("") }}",
+        "yasobeRuProject": "{{ donations_yasoberu_project|default("") }}",
+        "boostyProject": "{{ donations_boosty_project|default("") }}"
       }
     },
     "textFormatter": {

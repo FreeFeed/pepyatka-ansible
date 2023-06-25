@@ -9,6 +9,8 @@ freefeed_storage_type: s3
 freefeed_base_port: 4000
 freefeed_jobs_enabled: false
 
+imgproxy_port: 9998
+
 auth_token_prefix: micropeppa_
 
 postgres_host: 172.18.0.1

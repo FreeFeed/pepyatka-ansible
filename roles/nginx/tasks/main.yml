@@ -2,39 +2,63 @@
 
 - name: Install nginx
   become: yes
-  package:
+  ansible.builtin.package:
     name: nginx
     state: present
 
+- name: Start imgproxy container
+  become: yes
+  community.docker.docker_container:
+    name: "imgproxy-{{ freefeed_env }}"
+    image: "darthsim/imgproxy:v3"
+    state: started
+    restart_policy: on-failure
+    ports:
+      - "{{ imgproxy_port }}:8080"
+    env:
+      IMGPROXY_ONLY_PRESETS: 'true'
+      IMGPROXY_PRESETS: 'thumbnails=s:525:175/sh:0.5,thumbnails2=s:1050:350/sh:0.3,2k=s:2000:2000,square50=s:50:50/rt:fill,square75=s:75:75/rt:fill'
+      IMGPROXY_USE_ETAG: 'true'
+      IMGPROXY_MAX_SRC_RESOLUTION: '40'
+      IMGPROXY_JPEG_PROGRESSIVE: 'true'
+      IMGPROXY_PNG_INTERLACED: 'true'
+      IMGPROXY_MAX_ANIMATION_FRAMES: '100'
+    healthcheck:
+      test: [ "CMD", "imgproxy", "health" ]
+      timeout: 10s
+      interval: 10s
+      retries: 3
+
 - name: Render ssl.conf
   become: yes
-  template:
+  ansible.builtin.template:
     src: ssl.conf.j2
     dest: /etc/nginx/ssl.conf
-  register: ssl_conf
+  notify: Reload nginx
 
 - name: Render nginx.conf
   become: yes
-  template:
+  ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
-  register: nginx_conf
+  notify: Reload nginx
 
 - name: Ensure /etc/nginx/conf.d
   become: yes
-  file:
+  ansible.builtin.file:
     path: /etc/nginx/conf.d
     state: directory
 
 - name: Render /etc/nginx/conf.d/{{ freefeed_hostname }}.conf
   become: yes
-  template:
+  ansible.builtin.template:
     src: site.conf.j2
     dest: "/etc/nginx/conf.d/{{ freefeed_hostname }}.conf"
-  register: site_conf
+  notify: Reload nginx
 
-- name: Reload nginx
-  ansible.builtin.service:
-    name: nginx
-    state: reloaded
-  when: nginx_conf.changed or ssl_conf.changed or site_conf.changed
+- name: Render /etc/nginx/conf.d/{{ freefeed_media_hostname }}.conf
+  become: yes
+  ansible.builtin.template:
+    src: media.conf.j2
+    dest: "/etc/nginx/conf.d/{{ freefeed_media_hostname }}.conf"
+  notify: Reload nginx

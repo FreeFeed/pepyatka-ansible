@@ -4,6 +4,7 @@ auth_cookie_domain: freefeed.net
 local_storage_whoami_cache_key: whoamiCache
 
 nginx_client_max_body_size: '50M'
+freefeed_s3_media_base_url: http://{{ freefeed_s3_bucket }}.s3.{{ freefeed_s3_region }}.amazonaws.com
 
 recaptcha_enabled: true
 recaptcha_client_secret: '6LdChhITAAAAAGzgvUPPCbg0cxJzcxFc5vlBs9u5'

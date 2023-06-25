@@ -1,0 +1,45 @@
+server {
+  server_name {{ freefeed_media_hostname }};
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  access_log  /var/log/nginx/{{ freefeed_media_hostname }}.access.log proxy_log;
+
+  root /usr/share/nginx/html;
+
+  proxy_intercept_errors on;
+  error_page 403 404 504 /not-found.html;
+
+  location / {
+  }
+
+  location = /favicon.ico {
+    rewrite ^/favicon.ico /favicon.svg;
+  }
+
+  location = /not-found.html {
+    internal;
+  }
+
+  location /attachments/ {
+    location ~ ^/attachments/(\w+)/([\da-f-]+)\.(jpg|webp|png|gif)$ {
+      rewrite
+      ^/attachments/(\w+)/([\da-f-]+)\.(jpg|webp|png|gif)$
+      /s/$1/plain/{{ freefeed_s3_media_base_url }}/attachments/$2.$3@$arg_format;
+
+      proxy_pass http://localhost:{{ imgproxy_port }};
+      break;
+    }
+
+    proxy_pass {{ freefeed_s3_media_base_url }};
+    break;
+  }
+
+  location /profilepics/ {
+    rewrite
+    ^/profilepics/([\da-f-]+)_(50|75)\.(jpg|webp|png|gif)$
+    /s/square$2/plain/{{ freefeed_s3_media_base_url }}/profilepics/$1_75.$3@$arg_format;
+
+    proxy_pass http://localhost:{{ imgproxy_port }};
+    break;
+  }
+}

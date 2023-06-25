@@ -9,6 +9,8 @@ freefeed_base_port: 3000
 freefeed_jobs_enabled: true
 nginx_let_robots_index_root: true
 
+imgproxy_port: 9999
+
 auth_token_prefix: freefeedBETA_
 
 # gateway on freefeed docker network

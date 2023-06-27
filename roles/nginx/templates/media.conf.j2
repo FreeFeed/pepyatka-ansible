@@ -7,7 +7,6 @@ server {
 
   root /usr/share/nginx/html;
 
-{% if use_imgproxy %}
   proxy_intercept_errors on;
   error_page 403 404 504 /not-found.html;
 
@@ -22,6 +21,7 @@ server {
     internal;
   }
 
+{% if use_imgproxy %}
   location /attachments/ {
     location ~ ^/attachments/(\w+)/([\da-f-]+)\.(jpg|webp|png|gif)$ {
       rewrite

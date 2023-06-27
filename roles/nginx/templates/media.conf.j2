@@ -2,10 +2,12 @@ server {
   server_name {{ freefeed_media_hostname }};
   listen 443 ssl http2;
   listen [::]:443 ssl http2;
+
   access_log  /var/log/nginx/{{ freefeed_media_hostname }}.access.log proxy_log;
 
   root /usr/share/nginx/html;
 
+{% if use_imgproxy %}
   proxy_intercept_errors on;
   error_page 403 404 504 /not-found.html;
 
@@ -42,4 +44,10 @@ server {
     proxy_pass http://localhost:{{ imgproxy_port }};
     break;
   }
+{% else %}
+  location ~ ^/(.*)$ {
+    proxy_pass {{ freefeed_s3_media_base_url }}/$1;
+    proxy_redirect off;
+  }
+{% endif %}
 }

@@ -9,6 +9,8 @@ freefeed_base_port: 3000
 freefeed_jobs_enabled: true
 nginx_let_robots_index_root: true
 
+imgproxy_port: 9999
+
 auth_token_prefix: freefeedBETA_
 
 # gateway on freefeed docker network
@@ -37,3 +39,5 @@ donations_paypal_regular_button: "97PAKQ6S97XMW"
 donations_paypal_onetime_button: "HMVYD6GEWNWH8"
 donations_liberapay_project: "freefeed"
 donations_boosty_project: "freefeed"
+
+use_imgproxy: false

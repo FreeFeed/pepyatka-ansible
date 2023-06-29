@@ -26,121 +26,110 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-    server_name www.{{ freefeed_hostname }};
-    listen 80;
-    listen [::]:80;
-    listen 443;
-    listen [::]:443;
-    return 301 https://{{ freefeed_hostname }}$request_uri;
+  server_name www.{{ freefeed_hostname }};
+  listen 443;
+  listen [::]:443;
+  return 301 https://{{ freefeed_hostname }}$request_uri;
 }
 
 server {
-    server_name {{ freefeed_hostname }};
-    listen 80;
-    listen [::]:80;
-    return 301 https://$host$request_uri;
-}
+  server_name {{ freefeed_hostname }};
+  listen 443 ssl http2;
+  listen [::]:443 ssl http2;
+  access_log  /var/log/nginx/{{ freefeed_hostname }}.access.log proxy_log;
 
-server {
-    server_name {{ freefeed_hostname }};
+  # location / {
+  #     return 503;
+  # }
 
-    listen [::]:443 ssl http2;
-    listen 443 ssl http2;
+  # root /var/www/html;
+  # error_page 503 @maintenance;
+  # location @maintenance {
+  #    rewrite ^(.*)$ /maintenance.html break;
+  # }
 
-    access_log  /var/log/nginx/{{ freefeed_hostname }}.access.log  main;
+  # Disable logging for favicon
+  location = /favicon.ico {
+    log_not_found off;
+    access_log off;
+  }
 
-    # location / {
-    #     return 503;
-    # }
-
-    # root /var/www/html;
-    # error_page 503 @maintenance;
-    # location @maintenance {
-    #    rewrite ^(.*)$ /maintenance.html break;
-    # }
-
-    # Disable logging for favicon
-    location = /favicon.ico {
-      log_not_found off;
-      access_log off;
-    }
-
-    # Disable logging for robots.txt
-    location = /robots.txt {
+  # Disable logging for robots.txt
+  location = /robots.txt {
 {% if nginx_let_robots_index_root %}
-      return 200 "User-agent: *\nAllow: /$dollar\nDisallow: /";
+    return 200 "User-agent: *\nAllow: /$dollar\nDisallow: /";
 {% else %}
-      return 200 "User-agent: *\nDisallow: /";
+    return 200 "User-agent: *\nDisallow: /";
 {% endif %}
-      log_not_found off;
-      access_log off;
+    log_not_found off;
+    access_log off;
+  }
+
+  # These rewrites are for old pre-S3 urls
+  location /attachments/original/ {
+    if ($request_method !~ ^(GET|HEAD)$ ) {
+      return 405;
     }
+    rewrite ^/attachments/original/(.*)$ https://{{ freefeed_media_hostname }}/attachments/$1 permanent;
+  }
 
-    # These rewrites are for old pre-S3 urls
-    location /attachments/original/ {
-      if ($request_method !~ ^(GET|HEAD)$ ) {
-        return 405;
-      }
-      rewrite ^/attachments/original/(.*)$ https://{{ freefeed_media_hostname }}/attachments/$1 permanent;
+  location /attachments/(thumbnails|thumbnails2)/ {
+    if ($request_method !~ ^(GET|HEAD)$ ) {
+      return 405;
     }
+    rewrite ^/attachments/(.*)$ https://{{ freefeed_media_hostname }}/attachments/$1 permanent;
+  }
 
-    location /attachments/(thumbnails|thumbnails2)/ {
-      if ($request_method !~ ^(GET|HEAD)$ ) {
-        return 405;
-      }
-      rewrite ^/attachments/(.*)$ https://{{ freefeed_media_hostname }}/attachments/$1 permanent;
+  location /profilepics/ {
+    if ($request_method !~ ^(GET|HEAD)$ ) {
+      return 405;
     }
+    rewrite ^/profilepics/(.*)$ https://{{ freefeed_media_hostname }}/profilepics/$1 permanent;
+  }
 
-    location /profilepics/ {
-      if ($request_method !~ ^(GET|HEAD)$ ) {
-        return 405;
-      }
-      rewrite ^/profilepics/(.*)$ https://{{ freefeed_media_hostname }}/profilepics/$1 permanent;
-    }
+  location ~ ^/(v1/|v2/|socket.io/) {
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
 
-    location ~ ^/(v1/|v2/|socket.io/) {
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection $connection_upgrade;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-NginX-Proxy true;
+    proxy_set_header Access-Control-Allow-Origin '*';
+    proxy_set_header Access-Control-Allow-Methods 'GET,PUT,POST,DELETE,OPTIONS';
+    proxy_set_header Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept, X-Authentication-Token, Access-Control-Request-Method';
 
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_set_header X-NginX-Proxy true;
-      proxy_set_header Access-Control-Allow-Origin '*';
-      proxy_set_header Access-Control-Allow-Methods 'GET,PUT,POST,DELETE,OPTIONS';
-      proxy_set_header Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept, X-Authentication-Token, Access-Control-Request-Method';
+    proxy_pass http://{{ freefeed_site }}_server;
+    proxy_redirect off;
 
-      proxy_pass http://{{ freefeed_site }}_server;
-      proxy_redirect off;
+    proxy_connect_timeout 5s;
+    proxy_next_upstream_timeout 6s;
+  }
 
-      proxy_connect_timeout 5s;
-      proxy_next_upstream_timeout 6s;
-    }
+  location = /v1/users/sudo {
+    deny all;
+  }
+  location = /v1/groups/sudo {
+    deny all;
+  }
 
-    location = /v1/users/sudo {
-      deny all;
-    }
-    location = /v1/groups/sudo {
-      deny all;
-    }
+  location / {
+    proxy_http_version 1.1;
 
-    location / {
-      proxy_http_version 1.1;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-NginX-Proxy true;
 
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_set_header X-NginX-Proxy true;
-
-      proxy_buffers 32 4k;
+    proxy_buffers 32 4k;
 
 {% if beta_channel_cookie_map %}
-      proxy_pass http://$client_upstream$request_uri;
+    proxy_pass http://$client_upstream$request_uri;
 {% else %}
-      proxy_pass http://{{ freefeed_site }}_client;
+    proxy_pass http://{{ freefeed_site }}_client;
 {% endif %}
-      proxy_redirect off;
-    }
+    proxy_redirect off;
+  }
 }
 

@@ -23,6 +23,9 @@
       IMGPROXY_JPEG_PROGRESSIVE: 'true'
       IMGPROXY_PNG_INTERLACED: 'true'
       IMGPROXY_MAX_ANIMATION_FRAMES: '100'
+      IMGPROXY_DATADOG_ENABLE: 'true'
+      DD_AGENT_HOST: '172.18.0.1'
+      DD_ENV: "{{ freefeed_env }}"
     healthcheck:
       test: [ "CMD", "imgproxy", "health" ]
       timeout: 10s

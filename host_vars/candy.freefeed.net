@@ -17,3 +17,7 @@ freefeed_ratelimit_enabled: true
 freefeed_ratelimit_anonymous_config: { duration: 'PT1M', maxRequests: { all: 20, GET: 100 } }
 freefeed_ratelimit_authenticated_config: { duration: 'PT1M', maxRequests: { all: 40, GET: 300, POST: 60 } }
 freefeed_ratelimit_repeat_block_multiplier: 1.5
+
+translation_enabled: true
+translation_monthly_quote: 50000
+translation_daily_quote: 2000

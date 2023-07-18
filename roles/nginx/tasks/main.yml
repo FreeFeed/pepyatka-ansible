@@ -19,7 +19,7 @@
       IMGPROXY_ONLY_PRESETS: 'true'
       IMGPROXY_PRESETS: 'thumbnails=s:525:175/sh:0.5,thumbnails2=s:1050:350/sh:0.3,2k=s:2000:2000,square50=s:50:50/rt:fill,square75=s:75:75/rt:fill'
       IMGPROXY_USE_ETAG: 'true'
-      IMGPROXY_MAX_SRC_RESOLUTION: '40'
+      IMGPROXY_MAX_SRC_RESOLUTION: '50'
       IMGPROXY_JPEG_PROGRESSIVE: 'true'
       IMGPROXY_PNG_INTERLACED: 'true'
       IMGPROXY_MAX_ANIMATION_FRAMES: '100'

@@ -39,7 +39,7 @@ server {
   location /profilepics/ {
     rewrite
     ^/profilepics/([\da-f-]+)_(50|75)\.(jpg|webp|png|gif)$
-    /s/square$2/plain/{{ freefeed_s3_media_base_url }}/profilepics/$1_75.$3@$arg_format;
+    /s/profile$2/plain/{{ freefeed_s3_media_base_url }}/profilepics/$1_75.$3@$arg_format;
 
     proxy_pass http://localhost:{{ imgproxy_port }};
     break;

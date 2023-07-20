@@ -17,7 +17,7 @@
       - "{{ imgproxy_port }}:8080"
     env:
       IMGPROXY_ONLY_PRESETS: 'true'
-      IMGPROXY_PRESETS: 'thumbnails=s:525:175/sh:0.5,thumbnails2=s:1050:350/sh:0.3,2k=s:2000:2000,square50=s:50:50/rt:fill,square75=s:75:75/rt:fill'
+      IMGPROXY_PRESETS: 'thumbnails=s:525:175/sh:0.5,thumbnails2=s:1050:350/sh:0.3,2k=s:2000:2000,profile50=s:100:100/rt:fill,profile75=s:150:150/rt:fill'
       IMGPROXY_USE_ETAG: 'true'
       IMGPROXY_MAX_SRC_RESOLUTION: '50'
       IMGPROXY_JPEG_PROGRESSIVE: 'true'

@@ -40,4 +40,4 @@ donations_paypal_onetime_button: "HMVYD6GEWNWH8"
 donations_liberapay_project: "freefeed"
 donations_boosty_project: "freefeed"
 
-use_imgproxy: true
+use_imgproxy: false

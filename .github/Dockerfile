@@ -1,2 +1,2 @@
 FROM alpine:latest
-RUN apk add --no-cache ansible
+RUN apk add --no-cache ansible jq

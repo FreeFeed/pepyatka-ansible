@@ -22,6 +22,11 @@
     - local-json
     - config
 
+- name: Validate local-{{ freefeed_env }}.json
+  ansible.builtin.command: jq type "{{ freefeed_config_dir }}/local-{{ freefeed_env }}.json"
+  tags:
+    - validate-json
+
 - name: Start redis container
   become: yes
   docker_container:

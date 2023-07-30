@@ -16,6 +16,11 @@
   tags:
     - config
 
+- name: Validate /etc/freefeed/{{ freefeed_site }}/config.json
+  ansible.builtin.command: jq type "/etc/freefeed/{{ freefeed_site }}/config.json"
+  tags:
+    - validate-json
+
 - set_fact:
     server_containers: []
   tags:

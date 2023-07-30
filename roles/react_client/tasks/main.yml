@@ -5,6 +5,8 @@
   file:
     path: "/etc/freefeed/{{ freefeed_site }}"
     state: directory
+  tags:
+    - config
 
 - name: Render /etc/freefeed/{{ freefeed_site }}/config.json
   become: yes
@@ -13,6 +15,11 @@
     dest: "/etc/freefeed/{{ freefeed_site }}/config.json"
   tags:
     - config
+
+- name: Validate /etc/freefeed/{{ freefeed_site }}/config.json
+  ansible.builtin.command: jq type "/etc/freefeed/{{ freefeed_site }}/config.json"
+  tags:
+    - validate-json
 
 - set_fact:
     server_containers: []

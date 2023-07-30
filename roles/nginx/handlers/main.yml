@@ -5,3 +5,4 @@
   ansible.builtin.service:
     name: nginx
     state: reloaded
+  when: "'handlers' not in ansible_skip_tags"

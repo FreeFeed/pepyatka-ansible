@@ -1,0 +1,34 @@
+name: CI
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build image
+        run: docker build -t freefeed-ansible .github/
+
+      - run: echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > .vault_pass.txt
+      - name: Test server.yml
+        run: |
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i candy --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/server.yml
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i freefeed --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/server.yml
+
+      - name: Test react-client.yml
+        run: |
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i candy --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/react-client.yml
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i beta --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/react-client.yml
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i freefeed --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/react-client.yml
+
+      - name: Test nginx.yml
+        run: |
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i candy --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/nginx.yml
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i beta --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/nginx.yml
+          docker run --rm -v $PWD:/w -w /w --add-host freefeed.net:127.0.0.1 freefeed-ansible ansible-playbook --connection local -i freefeed --tags config,validate-json --skip-tags handlers --vault-password-file .vault_pass.txt playbooks/nginx.yml
+
+      - run: rm -f .vault_pass.txt
+        if: always()
+

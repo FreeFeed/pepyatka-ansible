@@ -6,8 +6,17 @@
     name: nginx
     state: present
 
+- name: Ensure /etc/nginx/conf.d
+  become: yes
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d
+    state: directory
+  tags:
+    - config
+
 - name: Start imgproxy container
   become: yes
+  when: use_imgproxy
   community.docker.docker_container:
     name: "imgproxy-{{ freefeed_env }}"
     image: "darthsim/imgproxy:v3"
@@ -37,6 +46,8 @@
   ansible.builtin.template:
     src: ssl.conf.j2
     dest: /etc/nginx/ssl.conf
+  tags:
+    - config
   notify: Reload nginx
 
 - name: Render nginx.conf
@@ -44,19 +55,17 @@
   ansible.builtin.template:
     src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
+  tags:
+    - config
   notify: Reload nginx
-
-- name: Ensure /etc/nginx/conf.d
-  become: yes
-  ansible.builtin.file:
-    path: /etc/nginx/conf.d
-    state: directory
 
 - name: Render /etc/nginx/conf.d/{{ freefeed_hostname }}.conf
   become: yes
   ansible.builtin.template:
     src: site.conf.j2
     dest: "/etc/nginx/conf.d/{{ freefeed_hostname }}.conf"
+  tags:
+    - config
   notify: Reload nginx
 
 - name: Render /etc/nginx/conf.d/{{ freefeed_media_hostname }}.conf
@@ -64,4 +73,6 @@
   ansible.builtin.template:
     src: media.conf.j2
     dest: "/etc/nginx/conf.d/{{ freefeed_media_hostname }}.conf"
+  tags:
+    - config
   notify: Reload nginx

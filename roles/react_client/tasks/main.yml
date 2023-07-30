@@ -5,6 +5,8 @@
   file:
     path: "/etc/freefeed/{{ freefeed_site }}"
     state: directory
+  tags:
+    - config
 
 - name: Render /etc/freefeed/{{ freefeed_site }}/config.json
   become: yes

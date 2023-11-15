@@ -31,3 +31,11 @@ ansible_python_interpreter: /usr/bin/python3
 invite_registrations_form_iframe_src: "https://docs.google.com/forms/d/e/1FAIpQLSdBzsUIHzR57Ylt2AfUfbIf9Bc03I8Oq2SdQmYqp0s-OsWmnw/viewform?embedded=true"
 
 use_imgproxy: true
+
+privacy_control_groups:
+  publik:
+    label: "Makes post public"
+    privacy: "public"
+  protected:
+    label: "Makes post protected"
+    privacy: "protected"

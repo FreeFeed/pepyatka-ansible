@@ -59,5 +59,8 @@
     },
     "registrationsByInvite": {
         "formIframeSrc": {{ invite_registrations_form_iframe_src|default(null)|tojson }}
+    },
+    "privacyControlGroups": {
+        "groups": {{ privacy_control_groups|default({})|tojson }}
     }
 }

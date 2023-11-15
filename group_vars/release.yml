@@ -41,3 +41,5 @@ donations_liberapay_project: "freefeed"
 donations_boosty_project: "freefeed"
 
 use_imgproxy: false
+
+privacy_control_groups: {}

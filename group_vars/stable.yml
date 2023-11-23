@@ -33,7 +33,7 @@ invite_registrations_form_iframe_src: "https://docs.google.com/forms/d/e/1FAIpQL
 use_imgproxy: true
 
 privacy_control_groups:
-  publik:
+  public:
     label: "Makes post public"
     privacy: "public"
   protected:

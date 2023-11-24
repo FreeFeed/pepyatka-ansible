@@ -42,4 +42,10 @@ donations_boosty_project: "freefeed"
 
 use_imgproxy: false
 
-privacy_control_groups: {}
+privacy_control_groups:
+  public:
+    label: "Makes post public"
+    privacy: "public"
+  protected:
+    label: "Makes post protected"
+    privacy: "protected"

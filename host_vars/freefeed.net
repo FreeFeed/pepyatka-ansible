@@ -24,3 +24,8 @@ freefeed_ratelimit_repeat_block_multiplier: 2
 translation_enabled: true
 translation_monthly_quote: 2500000
 translation_daily_quote: 25000
+
+user_preferences_overrides:
+  notifyOfCommentsOnMyPosts:
+    createdSince: "2023-11-27"
+    value: true

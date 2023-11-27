@@ -124,5 +124,8 @@
       "userCharactersPerDay": {{ translation_daily_quote | default(0) | tojson }}
     },
     "apiKey": {{ translation_api_key | default("") | tojson }}
+  },
+  "userPreferences": {
+    "overrides": {{ user_preferences_overrides | tojson }}
   }
 }

@@ -5,6 +5,7 @@ freefeed_media_hostname: media.freefeed.net
 freefeed_s3_bucket: freefeed-media
 freefeed_s3_region: eu-west-1
 freefeed_storage_type: s3
+freefeed_s3_media_base_url: http://media-r2.freefeed.net
 freefeed_base_port: 3000
 freefeed_jobs_enabled: true
 nginx_let_robots_index_root: true

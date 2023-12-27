@@ -22,10 +22,13 @@
     "storage": {
       "type": "s3",
       "rootDir": "/var/freefeed-files/",
-      "accessKeyId": "{{ aws_access_key | default(None) }}",
-      "secretAccessKey": "{{ aws_secret_key | default(None) }}",
-      "bucket": "{{ freefeed_s3_bucket }}",
-      "region": "{{ freefeed_s3_region }}"
+      "accessKeyId": "{{ aws_access_key }}",
+      "secretAccessKey": "{{ aws_secret_key }}",
+      "region": "{{ freefeed_s3_region }}",
+{% if freefeed_s3_endpoint is defined %}
+      "endpoint": "{{ freefeed_s3_endpoint }}",
+{% endif %}
+      "bucket": "{{ freefeed_s3_bucket }}"
     }
   },
   "attachments": {

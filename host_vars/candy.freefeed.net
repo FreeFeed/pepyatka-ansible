@@ -22,4 +22,7 @@ translation_enabled: true
 translation_monthly_quote: 50000
 translation_daily_quote: 2000
 
+user_preferences_defaults:
+  hideCommentsOfTypes:
+    - 4 # The Comment.HIDDEN_VIEWER_BANNED constant
 user_preferences_overrides: {}

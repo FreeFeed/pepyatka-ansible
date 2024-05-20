@@ -25,6 +25,9 @@ translation_enabled: true
 translation_monthly_quote: 2500000
 translation_daily_quote: 25000
 
+user_preferences_defaults:
+  hideCommentsOfTypes:
+    - 4 # The Comment.HIDDEN_VIEWER_BANNED constant
 user_preferences_overrides:
   notifyOfCommentsOnMyPosts:
     createdSince: "2023-11-27"

@@ -123,7 +123,7 @@
   tags:
     - server-status
 
-- include: jobs.yml
+- include_tasks: jobs.yml
   when: freefeed_jobs_enabled
   tags:
     - freefeed-maintenance

@@ -9,6 +9,10 @@ events {
 
 http {
   include       /etc/nginx/mime.types;
+  types {
+    # Manifest files
+    application/manifest+json  webmanifest;
+  }
   default_type  application/octet-stream;
   charset       utf-8;
   client_max_body_size {{ nginx_client_max_body_size }};
@@ -67,6 +71,16 @@ http {
       access_log off;
       # access_log logs/static.log; # if you want
       try_files $uri $uri/ /index.html?/$request_uri;
+    }
+
+    location = /sw.js {
+      expires off;
+      access_log off;
+    }
+
+    location = /manifest.webmanifest {
+      expires off;
+      access_log off;
     }
 
     # CSS and Javascript

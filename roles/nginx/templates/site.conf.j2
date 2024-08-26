@@ -57,9 +57,9 @@ server {
   # Disable logging for robots.txt
   location = /robots.txt {
 {% if nginx_let_robots_index_root %}
-    return 200 "User-agent: *\nAllow: /$dollar\nDisallow: /";
+    return 200 "User-agent: *\nAllow: /$dollar\nAllow: /docs/\nDisallow: /";
 {% else %}
-    return 200 "User-agent: *\nDisallow: /";
+    return 200 "User-agent: *\nAllow: /docs/\nDisallow: /";
 {% endif %}
     log_not_found off;
     access_log off;

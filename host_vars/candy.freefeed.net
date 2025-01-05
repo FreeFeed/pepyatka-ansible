@@ -26,3 +26,7 @@ user_preferences_defaults:
   hideCommentsOfTypes:
     - 4 # The Comment.HIDDEN_VIEWER_BANNED constant
 user_preferences_overrides: {}
+cors_proxy_allowed_url_prefixes:
+  - https://coub.com/api/oembed.json
+  - https://giphy.com/services/oembed
+  - https://www.aparat.com/oembed

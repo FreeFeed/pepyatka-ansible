@@ -132,5 +132,8 @@
   "userPreferences": {
     "defaults": {{ user_preferences_defaults | tojson }},
     "overrides": {{ user_preferences_overrides | tojson }}
+  },
+  "corsProxy": {
+    "allowedUrlPrefixes": {{ cors_proxy_allowed_url_prefixes | tojson }}
   }
 }

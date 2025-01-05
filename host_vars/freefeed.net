@@ -36,3 +36,4 @@ cors_proxy_allowed_url_prefixes:
   - https://coub.com/api/oembed.json
   - https://giphy.com/services/oembed
   - https://www.aparat.com/oembed
+  - https://www.aparat.com/etc/api/

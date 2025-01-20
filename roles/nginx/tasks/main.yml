@@ -31,7 +31,7 @@
       IMGPROXY_SYSLOG_ENABLE: 'true'
       IMGPROXY_LOG_LEVEL: 'warn'
       IMGPROXY_DATADOG_ENABLE: 'true'
-      IMGPROXY_BASE_URL: {{ freefeed_s3_media_base_url|tojson }}
+      IMGPROXY_ONLY_PRESETS: 'false'
       DD_AGENT_HOST: '172.18.0.1'
       DD_ENV: "{{ freefeed_env }}"
     healthcheck:

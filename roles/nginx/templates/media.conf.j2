@@ -1,3 +1,7 @@
+{% if use_imgproxy %}
+# Limit the frequency of imgproxy requests
+limit_req_zone $binary_remote_addr zone=imgp_limit:10m rate=10r/s;
+
 # imgproxy commands
 ## ?format=jpeg|webp|avif
 map $arg_format $imgp_format {
@@ -23,6 +27,7 @@ map "" $imgp_cmd {
     default "$imgp_resize$imgp_format";
 }
 # End of imgproxy commands
+{% endif %}
 
 server {
   server_name {{ freefeed_media_hostname }};
@@ -50,11 +55,15 @@ server {
 {% if use_imgproxy %}
   location ~ ^/attachments/(?:\w+/)?[\da-f-]+\.(?:jpg|webp|png|gif)$ {
     if ($imgp_cmd) {
-      rewrite ^/(.*)$ /s$imgp_cmd/plain/{{ freefeed_s3_media_base_url }}/$1 break;
-      proxy_pass http://localhost:{{ imgproxy_port }};
+      rewrite ^/(.*)$ /_imgproxy$imgp_cmd/plain/{{ freefeed_s3_media_base_url }}/$1;
     }
-
     proxy_pass {{ freefeed_s3_media_base_url }};
+  }
+
+  location /_imgproxy/ {
+      internal;
+      limit_req zone=imgp_limit burst=10;
+      proxy_pass http://localhost:{{ imgproxy_port }};
   }
 {% endif %}
 

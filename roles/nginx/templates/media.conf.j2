@@ -38,19 +38,19 @@ server {
 
   root /usr/share/nginx/html;
 
-  proxy_intercept_errors on;
+  # proxy_intercept_errors on;
   error_page 403 404 504 /not-found.html;
 
   location / {
   }
 
-  location = /favicon.ico {
-    rewrite ^/favicon.ico /favicon.svg;
-  }
+  # location = /favicon.ico {
+  #   rewrite ^/favicon.ico /favicon.svg;
+  # }
 
-  location = /not-found.html {
-    internal;
-  }
+  # location = /not-found.html {
+  #   internal;
+  # }
 
 {% if use_imgproxy %}
   location ~ ^/attachments/(?:\w+/)?[\da-f-]+\.(?:jpg|webp|png|gif)$ {

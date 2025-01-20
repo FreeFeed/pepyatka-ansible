@@ -28,6 +28,8 @@
       IMGPROXY_USE_ETAG: 'true'
       IMGPROXY_MAX_SRC_RESOLUTION: '50'
       IMGPROXY_JPEG_PROGRESSIVE: 'true'
+      IMGPROXY_SYSLOG_ENABLE: 'true'
+      IMGPROXY_LOG_LEVEL: 'warn'
       IMGPROXY_DATADOG_ENABLE: 'true'
       DD_AGENT_HOST: '172.18.0.1'
       DD_ENV: "{{ freefeed_env }}"
